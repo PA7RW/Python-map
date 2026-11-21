@@ -23,10 +23,10 @@ MODES = {
 }
 REVERSE_MODES = {v[0]: k for k, v in MODES.items()}
 
-class IC7300ControlApp:
+class IC7300mk2ControlApp:
     def __init__(self, root):
         self.root = root
-        self.root.title("Icom IC-7300 Controller")
+        self.root.title("Icom IC-7300mk2 Controller")
         self.root.geometry("400x300")
         self.root.resizable(False, False)
         
@@ -42,12 +42,12 @@ class IC7300ControlApp:
         
         ttk.Label(conn_frame, text="COM Poort:").grid(row=0, column=0, sticky="w")
         self.port_entry = ttk.Entry(conn_frame, width=10)
-        self.port_entry.insert(0, "COM3") # Pas dit aan naar jouw poort (bijv. /dev/ttyUSB0 op Linux)
+        self.port_entry.insert(0, "COM7") # Pas dit aan naar jouw poort (bijv. /dev/ttyUSB0 op Linux)
         self.port_entry.grid(row=0, column=1, padx=5)
         
         ttk.Label(conn_frame, text="Baudrate:").grid(row=0, column=2, sticky="w", padx=5)
         self.baud_combo = ttk.Combobox(conn_frame, values=["4800", "9600", "19200", "38400", "115200"], width=8)
-        self.baud_combo.set("115200") # IC-7300 standaard is vaak 'Auto' of 115200
+        self.baud_combo.set("115200") # IC-7300mk2 standaard is vaak 'Auto' of 115200
         self.baud_combo.grid(row=0, column=3, padx=5)
         
         self.btn_connect = ttk.Button(conn_frame, text="Verbinden", command=self.toggle_connection)
@@ -80,7 +80,7 @@ class IC7300ControlApp:
         btn_buttons_frame = ttk.Frame(mode_frame)
         btn_buttons_frame.pack(fill="x", pady=5)
         
-        for m in ["LSB", "USB", "CW", "RTTY"]:
+        for m in ["LSB", "USB", "CW", "RTTY", "LSB-D", "USB-D", "AM", "FM"]:
             btn = ttk.Button(btn_buttons_frame, text=m, command=lambda mode=m: self.set_mode(mode))
             btn.pack(side="left", fill="x", expand=True, padx=2)
 
@@ -151,7 +151,7 @@ class IC7300ControlApp:
         if res_freq and len(res_freq) >= 11:
             # Zoek naar de data in het antwoord (meestal vanaf index 5 tot 10 bij geldige info)
             # Voor de simpelheid scannen we op het juiste formaat binnen de buffer
-            idx = res_freq.find(b'\xFE\xFE' + bytes([CONTROLLER_ADDRESS, IC7300_ADDRESS, \x03]))
+            idx = res_freq.find(b'\xFE\xFE' + bytes([CONTROLLER_ADDRESS, IC7300mk2_ADDRESS]) + b'\x03')
             if idx != -1 and len(res_freq) >= idx + 11:
                 data = res_freq[idx+5:idx+10]
                 freq_str = f"{data[4]:02x}{data[3]:02x}{data[2]:02x}{data[1]:02x}{data[0]:02x}"
@@ -163,7 +163,7 @@ class IC7300ControlApp:
 
         # Verwerk modus
         if res_mode and len(res_mode) >= 8:
-            idx = res_mode.find(b'\xFE\xFE' + bytes([CONTROLLER_ADDRESS, IC7300_ADDRESS, \x04]))
+            idx = res_mode.find(b'\xFE\xFE' + bytes([CONTROLLER_ADDRESS, IC7300mk2_ADDRESS]) + b'\x04')
             if idx != -1 and len(res_mode) >= idx + 7:
                 mode_byte = res_mode[idx+5]
                 mode_name = REVERSE_MODES.get(mode_byte, f"Onbekend ({hex(mode_byte)})")
@@ -176,5 +176,5 @@ class IC7300ControlApp:
 
 if __name__ == "__main__":
     root = tk.Tk()
-    app = IC7300ControlApp(root)
+    app = IC7300mk2ControlApp(root)
     root.mainloop()
