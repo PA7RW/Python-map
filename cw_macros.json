@@ -1,0 +1,34 @@
+[
+  [
+    "F1 CQ",
+    "CQ CQ DE PA7RW PA7RW K "
+  ],
+  [
+    "F2 Exch",
+    "{CALL} 599 {NR} BK "
+  ],
+  [
+    "F3 TU",
+    "TU DE PA7RW QRZ? "
+  ],
+  [
+    "F4 MyCall",
+    "PA7RW "
+  ],
+  [
+    "F5 HisCall",
+    "{CALL} "
+  ],
+  [
+    "F6 QTH/Naam",
+    "{CALL} DE PA7RW NAME ROB QTH HEERHUGOWAARD HW? BK "
+  ],
+  [
+    "F7 AGN?",
+    "AGN? "
+  ],
+  [
+    "F8 73 SK",
+    "{CALL} DE PA7RW TNX FER QSO 73 SK "
+  ]
+]

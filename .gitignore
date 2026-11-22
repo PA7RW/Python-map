@@ -2,3 +2,15 @@
 *.lnk
 .venv/
 
+cw_decoder_1_01.py
+cw_decoder_1_02.py
+cw_decoder_1_03.py
+cw_decoder_1_04.py
+cw_decoder_1_05.py
+__pycache__/cw_decoder_1_01.cpython-315.pyc
+__pycache__/cw_decoder_1_02.cpython-315.pyc
+__pycache__/cw_decoder_1_03.cpython-315.pyc
+__pycache__/cw_decoder_1_04.cpython-315.pyc
+__pycache__/cw_decoder_1_05.cpython-315.pyc
+__pycache__/cw_decoder_1_06.cpython-315.pyc
+__pycache__/cw_terminal.cpython-315.pyc
