@@ -6,7 +6,13 @@ import time
 import threading
 import json
 import os
+import sys
 import re
+
+def get_base_dir():
+    if getattr(sys, 'frozen', False):
+        return os.path.dirname(sys.executable)
+    return os.path.dirname(os.path.abspath(__file__))
 
 MORSE_TO_CHAR = {
     ".-": "A", "-...": "B", "-.-.": "C", "-..": "D", ".": "E",
@@ -38,6 +44,7 @@ class CWTerminalWindow:
 
         self.contest_mode_var = tk.BooleanVar(value=False)
         self.serial_nr_var = tk.IntVar(value=1)
+        self.dx_call_var = tk.StringVar(value="")
 
         self.create_widgets()
         self.refresh_audio_devices()
@@ -92,6 +99,8 @@ class CWTerminalWindow:
             font=("Consolas", 12, "bold"), wrap="word", cursor="hand2"
         )
         self.txt_rx.pack(fill="both", expand=True)
+        self.txt_rx.tag_configure("rx_text", foreground="#00ff66")
+        self.txt_rx.tag_configure("tx_text", foreground="#ff4444")
         self.txt_rx.tag_configure("picked_call", background="#005a9e", foreground="white")
         self.txt_rx.bind("<ButtonRelease-1>", self.on_rx_click)
 
@@ -115,8 +124,9 @@ class CWTerminalWindow:
         call_row.pack(fill="x", pady=4)
 
         ttk.Label(call_row, text="Tegenstation ({CALL}):", font=("Arial", 9, "bold")).pack(side="left")
-        self.dx_call_entry = ttk.Entry(call_row, width=14, font=("Consolas", 11, "bold"))
+        self.dx_call_entry = ttk.Entry(call_row, width=14, font=("Consolas", 11, "bold"), textvariable=self.dx_call_var)
         self.dx_call_entry.pack(side="left", padx=5)
+        self.dx_call_var.trace_add("write", lambda *args: self.update_f1_button())
         ttk.Button(call_row, text="Wis", width=5, command=self.clear_callsign).pack(side="left", padx=(0, 12))
 
         self.chk_contest = ttk.Checkbutton(
@@ -168,15 +178,14 @@ class CWTerminalWindow:
                     break
 
             if len(clicked_word) >= 3 and any(c.isdigit() for c in clicked_word):
-                self.dx_call_entry.delete(0, tk.END)
-                self.dx_call_entry.insert(0, clicked_word)
+                self.dx_call_var.set(clicked_word)
                 self.txt_rx.tag_remove("picked_call", "1.0", tk.END)
                 self.txt_rx.tag_add("picked_call", word_start, word_end)
         except Exception:
             pass
 
     def clear_callsign(self):
-        self.dx_call_entry.delete(0, tk.END)
+        self.dx_call_var.set("")
         self.txt_rx.tag_remove("picked_call", "1.0", tk.END)
 
     def toggle_contest_state(self):
@@ -196,16 +205,18 @@ class CWTerminalWindow:
             ["F7 AGN?", "AGN? "],
             ["F8 73 SK", "{CALL} DE PA7RW TNX FER QSO 73 SK "]
         ]
-        if os.path.exists("cw_macros.json"):
+        macro_path = os.path.join(get_base_dir(), "cw_macros.json")
+        if os.path.exists(macro_path):
             try:
-                with open("cw_macros.json", "r", encoding="utf-8") as f:
+                with open(macro_path, "r", encoding="utf-8") as f:
                     return json.load(f)
             except Exception:
                 pass
         return default_macros
 
     def save_macros(self):
-        with open("cw_macros.json", "w", encoding="utf-8") as f:
+        macro_path = os.path.join(get_base_dir(), "cw_macros.json")
+        with open(macro_path, "w", encoding="utf-8") as f:
             json.dump(self.macros, f, indent=2)
 
     def rebuild_macro_buttons(self):
@@ -224,9 +235,26 @@ class CWTerminalWindow:
             self.macro_frame.columnconfigure(kolom, weight=1)
             self.macro_buttons.append(btn)
             self.win.bind(f"<F{idx+1}>", lambda e, i=idx, t=text: self.trigger_macro(i, t))
+        self.update_f1_button()
+
+    def update_f1_button(self):
+        if not hasattr(self, "macro_buttons") or not self.macro_buttons:
+            return
+        call = self.dx_call_var.get().strip().upper()
+        if call:
+            self.macro_buttons[0].config(text="Him de Me")
+        else:
+            orig_lbl = self.macros[0][0] if self.macros else "F1 CQ"
+            self.macro_buttons[0].config(text=orig_lbl)
 
     def trigger_macro(self, idx, template_text):
-        dx_call = self.dx_call_entry.get().strip().upper()
+        dx_call = self.dx_call_var.get().strip().upper()
+
+        # Dynamische F1: als er een tegenstation is ingevuld -> "Him de Me"
+        if idx == 0 and dx_call:
+            self.send_cw_text(f"{dx_call} DE PA7RW K ")
+            return
+
         final_text = template_text.replace("{CALL}", dx_call)
 
         if self.contest_mode_var.get():
@@ -283,10 +311,18 @@ class CWTerminalWindow:
         input_devs = []
         default_idx = 0
         for idx, dev in enumerate(devices):
+            if dev.get("hostapi") != 0:
+                continue
+            naam = dev["name"]
+            naam_laag = naam.lower()
+            if any(ign in naam_laag for ign in ["geluidstoewijzing", "primair", "primary", "display audio", "hd audio driver"]):
+                continue
             if dev["max_input_channels"] > 0:
-                name = f"{idx}: {dev['name']}"
+                name = f"{idx}: {naam}"
                 input_devs.append(name)
-                if "USB Audio CODEC" in dev["name"]:
+                if "USB AUDIO DEVICE" in naam.upper():
+                    default_idx = len(input_devs) - 1
+                elif "USB" in naam.upper() and default_idx == 0:
                     default_idx = len(input_devs) - 1
         self.audio_combo["values"] = input_devs
         if input_devs:
@@ -329,6 +365,7 @@ class CWTerminalWindow:
             messagebox.showwarning("Niet verbonden", "Maak eerst verbinding op het hoofdvenster.")
             return
         clean_txt = text.upper()
+        self.append_tx_text(clean_txt)
         for i in range(0, len(clean_txt), 30):
             chunk = clean_txt[i:i+30].encode("ascii", errors="ignore")
             self.app.send_cmd(b'\x17', chunk)
@@ -490,10 +527,18 @@ class CWTerminalWindow:
 
     def append_rx_text(self, text):
         if self.win.winfo_exists():
-            self.txt_rx.insert(tk.END, text)
+            self.txt_rx.insert(tk.END, text, "rx_text")
             self.txt_rx.see(tk.END)
+
+    def append_tx_text(self, text):
+        if self.win.winfo_exists():
+            huidige_tekst = self.txt_rx.get("1.0", tk.END)
+            prefix = "\n" if huidige_tekst.strip() and not huidige_tekst.endswith("\n") else ""
+            weergave_tekst = text.strip()
+            if weergave_tekst:
+                self.txt_rx.insert(tk.END, f"{prefix}{weergave_tekst}\n", "tx_text")
+                self.txt_rx.see(tk.END)
 
     def on_close(self):
         self.is_decoding = False
         self.win.destroy()
-

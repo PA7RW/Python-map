@@ -1,0 +1,1103 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>Military Calisthenics | 10 Min Workout</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#1b241e">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <style>
+    :root {
+      --bg-color: #0d120f;
+      --card-bg: #161e18;
+      --card-border: #26382b;
+      --primary-green: #00e676;
+      --military-green: #2e7d32;
+      --accent-orange: #ff9100;
+      --accent-blue: #00b0ff;
+      --text-main: #f0f4f1;
+      --text-muted: #8fa895;
+      --danger-red: #ff5252;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+      -webkit-tap-highlight-color: transparent;
+      user-select: none;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      padding: 16px;
+      overflow-x: hidden;
+    }
+
+    header {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+    }
+
+    .badge-mil {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(46, 125, 50, 0.25);
+      border: 1px solid var(--military-green);
+      color: #69f0ae;
+      padding: 4px 12px;
+      border-radius: 20px;
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 1px;
+      text-transform: uppercase;
+    }
+
+    .header-btns {
+      display: flex;
+      gap: 10px;
+    }
+
+    .icon-btn {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 1.1rem;
+      transition: all 0.2s;
+    }
+
+    .icon-btn:active {
+      transform: scale(0.92);
+      background: var(--card-border);
+    }
+
+    /* Status indicator */
+    .status-bar {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: 8px 0;
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-weight: 600;
+    }
+
+    .overall-progress-bar {
+      width: 100%;
+      max-width: 500px;
+      height: 6px;
+      background: #1b261e;
+      border-radius: 3px;
+      overflow: hidden;
+      margin-bottom: 12px;
+    }
+
+    .overall-progress-fill {
+      height: 100%;
+      width: 0%;
+      background: linear-gradient(90deg, var(--military-green), var(--primary-green));
+      transition: width 0.3s ease;
+    }
+
+    /* Main workout card */
+    .workout-card {
+      width: 100%;
+      max-width: 500px;
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 24px;
+      padding: 24px 20px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+      position: relative;
+      transition: border-color 0.4s;
+    }
+
+    .phase-badge {
+      font-size: 1rem;
+      font-weight: 800;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      padding: 6px 18px;
+      border-radius: 30px;
+      margin-bottom: 12px;
+      transition: all 0.3s;
+    }
+
+    .phase-badge.work {
+      background: rgba(0, 230, 118, 0.15);
+      color: var(--primary-green);
+      border: 1px solid var(--primary-green);
+    }
+
+    .phase-badge.rest {
+      background: rgba(0, 176, 255, 0.15);
+      color: var(--accent-blue);
+      border: 1px solid var(--accent-blue);
+    }
+
+    .phase-badge.prep {
+      background: rgba(255, 145, 0, 0.15);
+      color: var(--accent-orange);
+      border: 1px solid var(--accent-orange);
+    }
+
+    .phase-badge.done {
+      background: rgba(255, 215, 0, 0.2);
+      color: #ffd700;
+      border: 1px solid #ffd700;
+    }
+
+    /* Big circular timer */
+    .timer-container {
+      position: relative;
+      width: 220px;
+      height: 220px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 10px 0;
+    }
+
+    .timer-svg {
+      transform: rotate(-90deg);
+      width: 220px;
+      height: 220px;
+    }
+
+    .timer-bg-circle {
+      fill: none;
+      stroke: #202b23;
+      stroke-width: 12;
+    }
+
+    .timer-bar-circle {
+      fill: none;
+      stroke: var(--primary-green);
+      stroke-width: 12;
+      stroke-linecap: round;
+      stroke-dasharray: 628;
+      stroke-dashoffset: 0;
+      transition: stroke-dashoffset 0.2s linear, stroke 0.3s;
+    }
+
+    .timer-display {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .time-seconds {
+      font-size: 4.8rem;
+      font-weight: 900;
+      line-height: 1;
+      letter-spacing: -2px;
+      font-variant-numeric: tabular-nums;
+    }
+
+    .time-sub {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 1.5px;
+      margin-top: 4px;
+    }
+
+    /* Exercise details */
+    .exercise-title {
+      font-size: 1.8rem;
+      font-weight: 800;
+      text-align: center;
+      margin-top: 14px;
+      line-height: 1.2;
+      color: #fff;
+    }
+
+    .exercise-subtitle {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+      text-align: center;
+    }
+
+    .exercise-tip {
+      font-size: 0.85rem;
+      color: #b0c4b6;
+      background: rgba(0,0,0,0.25);
+      border-radius: 12px;
+      padding: 10px 14px;
+      margin-top: 14px;
+      text-align: center;
+      line-height: 1.4;
+      max-width: 90%;
+    }
+
+    .next-up-container {
+      margin-top: 14px;
+      width: 100%;
+      background: #101612;
+      border: 1px dashed var(--card-border);
+      border-radius: 12px;
+      padding: 8px 12px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.85rem;
+    }
+
+    .next-up-label {
+      color: var(--accent-orange);
+      font-weight: 700;
+      text-transform: uppercase;
+      font-size: 0.75rem;
+    }
+
+    .next-up-name {
+      color: var(--text-main);
+      font-weight: 600;
+    }
+
+    /* Control buttons */
+    .controls-container {
+      width: 100%;
+      max-width: 500px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-top: 18px;
+    }
+
+    .btn-secondary {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      color: var(--text-main);
+      padding: 16px 20px;
+      border-radius: 18px;
+      font-size: 1rem;
+      font-weight: 600;
+      flex: 1;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      transition: all 0.2s;
+    }
+
+    .btn-secondary:active {
+      transform: scale(0.95);
+      background: var(--card-border);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #00e676, #00b248);
+      border: none;
+      color: #05210c;
+      padding: 18px 30px;
+      border-radius: 20px;
+      font-size: 1.3rem;
+      font-weight: 800;
+      flex: 1.8;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      box-shadow: 0 6px 20px rgba(0, 230, 118, 0.35);
+      transition: all 0.2s;
+    }
+
+    .btn-primary:active {
+      transform: scale(0.96);
+      box-shadow: 0 2px 10px rgba(0, 230, 118, 0.2);
+    }
+
+    .btn-primary.paused {
+      background: linear-gradient(135deg, #ff9100, #ff6d00);
+      color: #2b1100;
+      box-shadow: 0 6px 20px rgba(255, 145, 0, 0.35);
+    }
+
+    /* Bottom quick tips */
+    .bottom-hint {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      text-align: center;
+      margin-top: 12px;
+    }
+
+    /* Modal dialogs */
+    .modal-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.75);
+      backdrop-filter: blur(4px);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+
+    .modal-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .modal-content {
+      background: var(--card-bg);
+      border: 1px solid var(--card-border);
+      border-radius: 20px;
+      padding: 24px;
+      width: 100%;
+      max-width: 440px;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 20px;
+    }
+
+    .modal-title {
+      font-size: 1.25rem;
+      font-weight: 800;
+    }
+
+    .setting-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+    }
+
+    .setting-label {
+      font-size: 0.95rem;
+      font-weight: 600;
+    }
+
+    .setting-sub {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+    }
+
+    .setting-input {
+      background: #0d120f;
+      border: 1px solid var(--card-border);
+      color: #fff;
+      padding: 8px 12px;
+      border-radius: 8px;
+      width: 70px;
+      text-align: center;
+      font-weight: 700;
+      font-size: 1rem;
+    }
+
+    .switch {
+      position: relative;
+      display: inline-block;
+      width: 48px;
+      height: 28px;
+    }
+
+    .switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #29382e;
+      transition: .3s;
+      border-radius: 28px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px; width: 20px;
+      left: 4px; bottom: 4px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider {
+      background-color: var(--primary-green);
+    }
+
+    input:checked + .slider:before {
+      transform: translateX(20px);
+    }
+
+    .exercise-list-item {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 10px;
+      border-radius: 10px;
+      background: rgba(255,255,255,0.02);
+      margin-bottom: 8px;
+      cursor: pointer;
+    }
+
+    .exercise-list-num {
+      width: 28px;
+      height: 28px;
+      border-radius: 50%;
+      background: var(--military-green);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.8rem;
+      font-weight: 700;
+    }
+
+    .btn-full {
+      width: 100%;
+      background: var(--military-green);
+      color: #fff;
+      border: none;
+      padding: 14px;
+      border-radius: 12px;
+      font-weight: 700;
+      font-size: 1rem;
+      margin-top: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <header>
+    <div class="badge-mil">★ MILITARY CALISTHENICS ★</div>
+    <div class="header-btns">
+      <button class="icon-btn" id="btn-list" title="Oefeningenlijst">📋</button>
+      <button class="icon-btn" id="btn-settings" title="Instellingen">⚙️</button>
+    </div>
+  </header>
+
+  <!-- Status & Voortgang -->
+  <div class="status-bar">
+    <span id="txt-round">Ronde 1 / 2</span>
+    <span id="txt-total-time">Totaal: 10:20</span>
+    <span id="txt-step-num">Oefening 1 / 8</span>
+  </div>
+
+  <div class="overall-progress-bar">
+    <div class="overall-progress-fill" id="overall-bar"></div>
+  </div>
+
+  <!-- Hoofdkaart -->
+  <div class="workout-card" id="main-card">
+    <div class="phase-badge prep" id="phase-badge">VOORBEREIDEN</div>
+
+    <!-- Cirkel Timer -->
+    <div class="timer-container">
+      <svg class="timer-svg" viewBox="0 0 220 220">
+        <circle class="timer-bg-circle" cx="110" cy="110" r="95"></circle>
+        <circle class="timer-bar-circle" id="timer-progress" cx="110" cy="110" r="95"></circle>
+      </svg>
+      <div class="timer-display">
+        <span class="time-seconds" id="display-seconds">10</span>
+        <span class="time-sub" id="display-sub">SECONDEN</span>
+      </div>
+    </div>
+
+    <!-- Oefening Informatie -->
+    <h1 class="exercise-title" id="exercise-name">High Knees</h1>
+    <div class="exercise-subtitle" id="exercise-sub">Knieheffen | Conditie & Benen</div>
+    <div class="exercise-tip" id="exercise-tip">Ren krachtig op de plaats en breng je knieën omhoog tot heuphoogte!</div>
+
+    <!-- Volgende Oefening Preview -->
+    <div class="next-up-container" id="next-up-box">
+      <span class="next-up-label">Hierna:</span>
+      <span class="next-up-name" id="next-up-name">Glute Kickbacks</span>
+    </div>
+  </div>
+
+  <!-- Knoppen balk -->
+  <div class="controls-container">
+    <button class="btn-secondary" id="btn-prev" title="Vorige oefening">⏮️ Vorige</button>
+    <button class="btn-primary" id="btn-main">▶ START</button>
+    <button class="btn-secondary" id="btn-next" title="Volgende oefening">Volgende ⏭️</button>
+  </div>
+
+  <div class="bottom-hint">
+    📲 Tip voor Samsung: Tik rechtsboven op ⋮ en kies <b>"Toevoegen aan startscherm"</b>
+  </div>
+
+  <!-- Instellingen Modal -->
+  <div class="modal-overlay" id="modal-settings">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">⚙️ Instellingen</h2>
+        <button class="icon-btn" id="btn-close-settings">✕</button>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Werkduur per oefening</div>
+          <div class="setting-sub">Aantal seconden inspanning (video: 30s)</div>
+        </div>
+        <input type="number" class="setting-input" id="cfg-work" value="30" min="10" max="120">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Rustduur</div>
+          <div class="setting-sub">Seconden rust tussen oefeningen (standaard 10s)</div>
+        </div>
+        <input type="number" class="setting-input" id="cfg-rest" value="10" min="5" max="60">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Rust tussen rondes</div>
+          <div class="setting-sub">Hersteltijd tussen ronde 1 en 2 (standaard 25s)</div>
+        </div>
+        <input type="number" class="setting-input" id="cfg-round-rest" value="25" min="10" max="90">
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Spraakbegeleiding (NL)</div>
+          <div class="setting-sub">Kondigt oefening en aftellen hardop aan</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="cfg-speech" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Piepjes (Audio)</div>
+          <div class="setting-sub">Aftelpiepjes bij 3, 2, 1 en start</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="cfg-sound" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <div class="setting-row">
+        <div>
+          <div class="setting-label">Trillen (Samsung)</div>
+          <div class="setting-sub">Haptische trilling bij wissel</div>
+        </div>
+        <label class="switch">
+          <input type="checkbox" id="cfg-vibrate" checked>
+          <span class="slider"></span>
+        </label>
+      </div>
+
+      <button class="btn-full" id="btn-save-settings">Opslaan & Sluiten</button>
+    </div>
+  </div>
+
+  <!-- Oefeningenlijst Modal -->
+  <div class="modal-overlay" id="modal-list">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title">📋 8 Oefeningen (2 Rondes)</h2>
+        <button class="icon-btn" id="btn-close-list">✕</button>
+      </div>
+      <div id="exercise-list-container"></div>
+      <button class="btn-full" id="btn-close-list-2">Sluiten</button>
+    </div>
+  </div>
+
+  <script>
+    // 8 Oefeningen uit de Military Calisthenics video (og6JnLLOdFw)
+    const EXERCISES = [
+      {
+        id: 1,
+        name: "High Knees",
+        nl: "Knieheffen",
+        sub: "Cardio, Quads & Buikspieren",
+        tip: "Pomp je armen mee en breng je knieën omhoog tot heuphoogte. Blijf op de bal van je voeten springen."
+      },
+      {
+        id: 2,
+        name: "Glute Kickbacks",
+        nl: "Billen Kickbacks",
+        sub: "Glutes & Hamstrings",
+        tip: "Handen en knieën op de vloer (of staand). Trap gecontroleerd naar achteren en knijp bovenin je bilspier aan."
+      },
+      {
+        id: 3,
+        name: "Froggers",
+        nl: "Kikkersprongen",
+        sub: "Hele lichaam, Heupen & Explosiviteit",
+        tip: "Begin in hoge plank. Spring met beide voeten naar de buitenkant van je handen in een diepe lage squat en spring terug."
+      },
+      {
+        id: 4,
+        name: "Surrender Squats",
+        nl: "Overgave Squats",
+        sub: "Quads, Balans & Core",
+        tip: "Handen achter het hoofd. Zak knielend met één knie naar de vloer, dan de andere, en stap voet voor voet terug omhoog."
+      },
+      {
+        id: 5,
+        name: "Half Burpees",
+        nl: "Halve Burpees",
+        sub: "Cardio & Core",
+        tip: "Vanuit stand handen op de grond, spring naar plank en spring direct weer met je voeten naar voren en sta op."
+      },
+      {
+        id: 6,
+        name: "Skaters",
+        nl: "Schaatsers",
+        sub: "Zijwaartse beenspieren & Stabiliteit",
+        tip: "Spring zijwaarts van links naar rechts, kruis je achterste been achterlangs en zwaai je armen mee als een schaatser."
+      },
+      {
+        id: 7,
+        name: "Plank Jacks",
+        nl: "Plank Jacks",
+        sub: "Schouders, Core & Calves",
+        tip: "Blijf in een strakke plank (buik aanspannen) en spring met je voeten open en dicht zoals bij jumping jacks."
+      },
+      {
+        id: 8,
+        name: "Squat Jumps",
+        nl: "Squat Sprongen",
+        sub: "Explosieve Benen & Kuiten",
+        tip: "Zak in een diepe squat en explodeer krachtig omhoog in de lucht. Vang de landing zachtjes op en zak meteen door."
+      }
+    ];
+
+    // Instellingen
+    let config = {
+      workSec: 30,
+      restSec: 10,
+      roundRestSec: 25,
+      totalRounds: 2,
+      speech: true,
+      sound: true,
+      vibrate: true
+    };
+
+    // Workout generator (twee rondes van 8 oefeningen)
+    function buildWorkoutQueue() {
+      const queue = [];
+      // 10 sec start voorbereiding
+      queue.push({
+        type: 'prep',
+        title: 'Voorbereiden',
+        sub: 'Maak je klaar voor Ronde 1!',
+        tip: 'Zorg voor wat ruimte en water bij de hand.',
+        duration: 10,
+        round: 1,
+        stepIndex: 0,
+        nextName: `${EXERCISES[0].name} (${EXERCISES[0].nl})`
+      });
+
+      for (let r = 1; r <= config.totalRounds; r++) {
+        EXERCISES.forEach((ex, idx) => {
+          // Werk fase
+          queue.push({
+            type: 'work',
+            exercise: ex,
+            title: ex.name,
+            sub: `${ex.nl} | ${ex.sub}`,
+            tip: ex.tip,
+            duration: config.workSec,
+            round: r,
+            stepIndex: idx + 1,
+            nextName: (idx < EXERCISES.length - 1) 
+              ? `${EXERCISES[idx + 1].name} (${EXERCISES[idx + 1].nl})` 
+              : (r < config.totalRounds ? 'Ronde Rust' : 'Afsluiting!')
+          });
+
+          // Rust fase (tenzij het de allerlaatste oefening van de laatste ronde is)
+          if (!(r === config.totalRounds && idx === EXERCISES.length - 1)) {
+            const isRoundBreak = (idx === EXERCISES.length - 1);
+            queue.push({
+              type: 'rest',
+              title: isRoundBreak ? 'HALVERWEGE RUST!' : 'RUST',
+              sub: isRoundBreak ? `Ronde 1 voltooid! Even op adem komen voor Ronde 2.` : 'Haal diep adem en drink een slokje.',
+              tip: isRoundBreak ? 'Schud je benen en armen even los.' : `Bereid je voor op de volgende oefening:`,
+              duration: isRoundBreak ? config.roundRestSec : config.restSec,
+              round: r,
+              stepIndex: idx + 1,
+              nextName: isRoundBreak 
+                ? `${EXERCISES[0].name} (${EXERCISES[0].nl})` 
+                : `${EXERCISES[idx + 1].name} (${EXERCISES[idx + 1].nl})`
+            });
+          }
+        });
+      }
+
+      // Finish fase
+      queue.push({
+        type: 'done',
+        title: 'MISSIE VOLBRACHT!',
+        sub: 'Geweldig gewerkt! 10 minuten Military Calisthenics voltooid!',
+        tip: 'Blijf even rustig uitlopen en drink voldoende water.',
+        duration: 0,
+        round: config.totalRounds,
+        stepIndex: EXERCISES.length,
+        nextName: '-'
+      });
+
+      return queue;
+    }
+
+    let workoutQueue = [];
+    let currentStepIndex = 0;
+    let secondsLeft = 10;
+    let timerInterval = null;
+    let isRunning = false;
+    let wakeLock = null;
+
+    // Web Audio synthesizer voor piepjes
+    let audioCtx = null;
+    function playBeep(freq = 880, duration = 0.15, type = 'sine') {
+      if (!config.sound) return;
+      try {
+        if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        if (audioCtx.state === 'suspended') audioCtx.resume();
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = type;
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.2, audioCtx.currentTime);
+        gain.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + duration);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start();
+        osc.stop(audioCtx.currentTime + duration);
+      } catch (e) {
+        console.warn('Audio error:', e);
+      }
+    }
+
+    // Spraaksynthese (Web Speech API)
+    function speakText(text) {
+      if (!config.speech || !('speechSynthesis' in window)) return;
+      try {
+        window.speechSynthesis.cancel();
+        const utter = new SpeechSynthesisUtterance(text);
+        utter.lang = 'nl-NL';
+        utter.rate = 1.05;
+        window.speechSynthesis.speak(utter);
+      } catch (e) {
+        console.warn('Speech error:', e);
+      }
+    }
+
+    // Trillen (voor mobiel/Samsung)
+    function triggerVibrate(pattern) {
+      if (config.vibrate && 'vibrate' in navigator) {
+        navigator.vibrate(pattern);
+      }
+    }
+
+    // Voorkom dat Samsung scherm op zwart gaat tijdens workout
+    async function requestWakeLock() {
+      try {
+        if ('wakeLock' in navigator) {
+          wakeLock = await navigator.wakeLock.request('screen');
+        }
+      } catch (err) {
+        console.log('WakeLock not active:', err);
+      }
+    }
+
+    function releaseWakeLock() {
+      if (wakeLock) {
+        wakeLock.release().then(() => wakeLock = null);
+      }
+    }
+
+    // UI elementen
+    const elPhaseBadge = document.getElementById('phase-badge');
+    const elTimerProgress = document.getElementById('timer-progress');
+    const elDisplaySec = document.getElementById('display-seconds');
+    const elDisplaySub = document.getElementById('display-sub');
+    const elExName = document.getElementById('exercise-name');
+    const elExSub = document.getElementById('exercise-sub');
+    const elExTip = document.getElementById('exercise-tip');
+    const elNextBox = document.getElementById('next-up-box');
+    const elNextName = document.getElementById('next-up-name');
+    const elTxtRound = document.getElementById('txt-round');
+    const elTxtTotalTime = document.getElementById('txt-total-time');
+    const elTxtStepNum = document.getElementById('txt-step-num');
+    const elOverallBar = document.getElementById('overall-bar');
+    const btnMain = document.getElementById('btn-main');
+    const btnPrev = document.getElementById('btn-prev');
+    const btnNext = document.getElementById('btn-next');
+    const mainCard = document.getElementById('main-card');
+
+    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 95; // ~596.9
+
+    function updateUI() {
+      const step = workoutQueue[currentStepIndex];
+      if (!step) return;
+
+      // Badges & styling per fase
+      elPhaseBadge.className = `phase-badge ${step.type}`;
+      if (step.type === 'work') {
+        elPhaseBadge.innerText = '⚡ WERK! GEVEN ALLES';
+        elTimerProgress.style.stroke = 'var(--primary-green)';
+        mainCard.style.borderColor = 'rgba(0, 230, 118, 0.4)';
+      } else if (step.type === 'rest') {
+        elPhaseBadge.innerText = '💧 RUST & HERSTEL';
+        elTimerProgress.style.stroke = 'var(--accent-blue)';
+        mainCard.style.borderColor = 'rgba(0, 176, 255, 0.4)';
+      } else if (step.type === 'prep') {
+        elPhaseBadge.innerText = '⏱️ MAAK JE KLAAR';
+        elTimerProgress.style.stroke = 'var(--accent-orange)';
+        mainCard.style.borderColor = 'rgba(255, 145, 0, 0.4)';
+      } else if (step.type === 'done') {
+        elPhaseBadge.innerText = '🏆 KLAAR!';
+        elTimerProgress.style.stroke = '#ffd700';
+        mainCard.style.borderColor = 'rgba(255, 215, 0, 0.5)';
+      }
+
+      elDisplaySec.innerText = secondsLeft;
+      elDisplaySub.innerText = (step.type === 'done') ? 'TOP GEWERKT' : 'SECONDEN';
+
+      elExName.innerText = step.title;
+      elExSub.innerText = step.sub;
+      elExTip.innerText = step.tip;
+
+      if (step.type === 'done') {
+        elNextBox.style.display = 'none';
+      } else {
+        elNextBox.style.display = 'flex';
+        elNextName.innerText = step.nextName;
+      }
+
+      elTxtRound.innerText = `Ronde ${step.round} / ${config.totalRounds}`;
+      elTxtStepNum.innerText = (step.stepIndex > 0) ? `Oefening ${step.stepIndex} / ${EXERCISES.length}` : `Voorbereiding`;
+
+      // Cirkel voortgang
+      const totalDur = Math.max(1, step.duration);
+      const ratio = secondsLeft / totalDur;
+      const offset = CIRCLE_CIRCUMFERENCE * (1 - ratio);
+      elTimerProgress.style.strokeDasharray = CIRCLE_CIRCUMFERENCE;
+      elTimerProgress.style.strokeDashoffset = offset;
+
+      // Totale workout voortgang
+      const progressPercent = (currentStepIndex / (workoutQueue.length - 1)) * 100;
+      elOverallBar.style.width = `${progressPercent}%`;
+
+      // Resterende totale tijd
+      let remainingSec = secondsLeft;
+      for (let i = currentStepIndex + 1; i < workoutQueue.length; i++) {
+        remainingSec += workoutQueue[i].duration;
+      }
+      const m = Math.floor(remainingSec / 60);
+      const s = remainingSec % 60;
+      elTxtTotalTime.innerText = `Resterend: ${m}:${s < 10 ? '0' : ''}${s}`;
+    }
+
+    function nextStep() {
+      if (currentStepIndex < workoutQueue.length - 1) {
+        currentStepIndex++;
+        const step = workoutQueue[currentStepIndex];
+        secondsLeft = step.duration;
+        updateUI();
+
+        // Audio & Spraak bij stapwissel
+        if (step.type === 'work') {
+          playBeep(1760, 0.25, 'triangle');
+          triggerVibrate([200, 100, 200]);
+          speakText(`${step.title}! Start!`);
+        } else if (step.type === 'rest') {
+          playBeep(520, 0.3, 'sine');
+          triggerVibrate(150);
+          speakText(`Rust! Volgende oefening: ${step.nextName}`);
+        } else if (step.type === 'done') {
+          playBeep(1046, 0.6, 'triangle');
+          triggerVibrate([300, 100, 300, 100, 500]);
+          speakText(`Gefeliciteerd! Je hebt de 10 minuten workout voltooid!`);
+          pauseWorkout();
+        }
+      } else {
+        pauseWorkout();
+      }
+    }
+
+    function prevStep() {
+      if (currentStepIndex > 0) {
+        currentStepIndex--;
+        secondsLeft = workoutQueue[currentStepIndex].duration;
+        updateUI();
+      }
+    }
+
+    function tick() {
+      if (secondsLeft > 1) {
+        secondsLeft--;
+        // Piepjes bij laatste 3 seconden
+        if (secondsLeft <= 3 && secondsLeft > 0) {
+          playBeep(880, 0.12, 'sine');
+          triggerVibrate(80);
+        }
+        updateUI();
+      } else {
+        nextStep();
+      }
+    }
+
+    function startWorkout() {
+      if (!audioCtx) audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+      if (audioCtx.state === 'suspended') audioCtx.resume();
+
+      isRunning = true;
+      btnMain.innerText = '⏸ PAUZE';
+      btnMain.classList.add('paused');
+      requestWakeLock();
+
+      const currentStep = workoutQueue[currentStepIndex];
+      if (secondsLeft === currentStep.duration) {
+        if (currentStep.type === 'prep') {
+          speakText('Maak je klaar! Tien seconden voorbereiding.');
+        } else if (currentStep.type === 'work') {
+          speakText(currentStep.title);
+        }
+      }
+
+      timerInterval = setInterval(tick, 1000);
+    }
+
+    function pauseWorkout() {
+      isRunning = false;
+      btnMain.innerText = '▶ START';
+      btnMain.classList.remove('paused');
+      clearInterval(timerInterval);
+      releaseWakeLock();
+    }
+
+    btnMain.addEventListener('click', () => {
+      if (isRunning) {
+        pauseWorkout();
+      } else {
+        if (workoutQueue[currentStepIndex].type === 'done') {
+          // Herstarten vanaf begin
+          currentStepIndex = 0;
+          secondsLeft = workoutQueue[0].duration;
+          updateUI();
+        }
+        startWorkout();
+      }
+    });
+
+    btnNext.addEventListener('click', () => {
+      nextStep();
+    });
+
+    btnPrev.addEventListener('click', () => {
+      prevStep();
+    });
+
+    // Modals
+    const modalSettings = document.getElementById('modal-settings');
+    const modalList = document.getElementById('modal-list');
+
+    document.getElementById('btn-settings').addEventListener('click', () => {
+      modalSettings.classList.add('open');
+    });
+    document.getElementById('btn-close-settings').addEventListener('click', () => {
+      modalSettings.classList.remove('open');
+    });
+
+    document.getElementById('btn-save-settings').addEventListener('click', () => {
+      config.workSec = parseInt(document.getElementById('cfg-work').value) || 30;
+      config.restSec = parseInt(document.getElementById('cfg-rest').value) || 10;
+      config.roundRestSec = parseInt(document.getElementById('cfg-round-rest').value) || 25;
+      config.speech = document.getElementById('cfg-speech').checked;
+      config.sound = document.getElementById('cfg-sound').checked;
+      config.vibrate = document.getElementById('cfg-vibrate').checked;
+
+      const wasRunning = isRunning;
+      pauseWorkout();
+      workoutQueue = buildWorkoutQueue();
+      currentStepIndex = 0;
+      secondsLeft = workoutQueue[0].duration;
+      updateUI();
+      modalSettings.classList.remove('open');
+    });
+
+    // Oefeningenlijst genereren
+    const listContainer = document.getElementById('exercise-list-container');
+    EXERCISES.forEach((ex, idx) => {
+      const item = document.createElement('div');
+      item.className = 'exercise-list-item';
+      item.innerHTML = `
+        <div class="exercise-list-num">${idx + 1}</div>
+        <div>
+          <div style="font-weight:700;">${ex.name} <span style="font-size:0.85rem;color:var(--text-muted);font-weight:normal;">(${ex.nl})</span></div>
+          <div style="font-size:0.75rem;color:var(--text-muted);">${ex.sub}</div>
+        </div>
+      `;
+      listContainer.appendChild(item);
+    });
+
+    document.getElementById('btn-list').addEventListener('click', () => {
+      modalList.classList.add('open');
+    });
+    document.getElementById('btn-close-list').addEventListener('click', () => {
+      modalList.classList.remove('open');
+    });
+    document.getElementById('btn-close-list-2').addEventListener('click', () => {
+      modalList.classList.remove('open');
+    });
+
+    // Service Worker registreren voor offline PWA
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
+      });
+    }
+
+    // Initialisatie
+    workoutQueue = buildWorkoutQueue();
+    secondsLeft = workoutQueue[0].duration;
+    updateUI();
+  </script>
+</body>
+</html>

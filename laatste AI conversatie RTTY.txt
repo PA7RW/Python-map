@@ -1,0 +1,29 @@
+er komt nu alleen een draag golf uit
+
+
+er komt nu alleen een draag golf uit
+
+Dat klopt precies! Dat komt omdat je IC-7300mk2 nu nog in de modus RTTY (FSK) staat in plaats van USB-D (AFSK), waardoor de radio wacht op een harde FSK-sleutelpuls op de COM-poort en de USB-audio van de computer negeert.
+
+Twee directe oplossingen (kies degene die jij het fijnst vindt):
+
+
+Optie 1: Direct werken in USB-D (10 seconden werk, werkt meteen)
+
+1. Klik in je controller op USB-D (of we laten je RTTY-knop de radio automatisch op USB-D zetten terwijl hij het RTTY-venster opent!).
+2. Controleer eenmalig op je IC-7300mk2 in het menu:
+	• MENU -> SET -> Connectors -> DATA MOD = USB
+	• MENU -> SET -> Connectors -> USB MOD Level = rond 40% – 50% (zodat je ALC op de IC-7300 netjes binnen het eerste derde deel blijft en niet overstuurt!).
+3. Zodra je nu op F1 CQ of Zend RTTY drukt, hoor je de karakteristieke RTTY-toontjes in de monitor en gaat er direct een strak gemoduleerd RTTY-signaal de lucht in.
+
+Optie 2: Echte FSK gebruiken in de RTTY-stand van de IC-7300mk2
+
+Wil je de radio juist in de ingebouwde RTTY-stand laten staan (zodat je het ingebouwde Twin-Peak RTTY-filter van de IC-7300 gebruikt)?
+• De IC-7300mk2 maakt bij USB-aansluiting op de pc twee virtuele COM-poorten aan (bijv. COM4 voor CI-V CAT en COM5 voor DTR/RTS keying).
+• In het menu van de IC-7300mk2 (MENU -> SET -> Connectors -> USB Send/Keying -> RTTY Keying) kun je DTR of RTS van die tweede COM-poort instellen als FSK-ingang — en dan kunnen wij rtty_terminal_1_00.py zo aanpassen dat hij die DTR/RTS-lijn in het ritme van de Baudot-bits aan/uit schakelt!
+Welke van de twee wil je gebruiken:
+• Optie 1 (USB-D voor AFSK): Dan pas ik één regeltje in PA7RW_assistent_2.01.py aan zodat de knop RTTY je radio op USB-D zet en het RTTY-venster opent.
+• Optie 2 (Echte RTTY-stand via FSK): Laat dan even weten welke tweede COM-poort je IC-7300mk2 in Windows Apparaatbeheer heeft gekregen (en of RTTY Keying op DTR of RTS staat), dan bouw ik echte FSK-sleuteling in rtty_terminal_1_01.py.
+AI-reacties kunnen fouten bevatten. Meer informatie
+
+optie 2; serial port B (COM3)

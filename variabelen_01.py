@@ -12,7 +12,7 @@ print (5-3,2) # dit is een simpele aftrekking en een strings
 # er zijn integers en foats, integers zijn gehele getallen en floats zijn kommagetallen. beide worden verschillend behandeld door phyton. 
 # integers worden gebruikt voor hele getallen en floats voor kommagetallen.
 
-# f"string stuff here {code stuff here}"
+# f"tekst hier {code hier}"
 print(f"3 + 2 = {3 + 2}") # dit levert de bewerking incl uitkomst op op je monitor en wordt een f-string genoemd. de f staat voor format. de uitkomst van de bewerking wordt in de string geplaatst.
 print(f"5 - 1 = {5 - 1}")
 print(f"3 * 4 = {3 * 4}")
