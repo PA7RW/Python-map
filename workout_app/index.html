@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
   <title>Military Calisthenics | 10 Min Workout</title>
   <link rel="manifest" href="manifest.json">
-  <meta name="theme-color" content="#1b241e">
+  <meta name="theme-color" content="#121815">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
   <style>
@@ -20,6 +20,11 @@
       --text-main: #f0f4f1;
       --text-muted: #8fa895;
       --danger-red: #ff5252;
+      --athlete-skin: #f5c8a8;
+      --athlete-hair: #4a2c11;
+      --athlete-top: #00e676;
+      --athlete-legging: #1b2620;
+      --athlete-shoes: #ffffff;
     }
 
     * {
@@ -39,17 +44,17 @@
       flex-direction: column;
       align-items: center;
       justify-content: space-between;
-      padding: 16px;
+      padding: 12px 14px;
       overflow-x: hidden;
     }
 
     header {
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 8px 0;
+      padding: 4px 0 8px 0;
     }
 
     .badge-mil {
@@ -61,29 +66,29 @@
       color: #69f0ae;
       padding: 4px 12px;
       border-radius: 20px;
-      font-size: 0.8rem;
-      font-weight: 700;
-      letter-spacing: 1px;
+      font-size: 0.75rem;
+      font-weight: 800;
+      letter-spacing: 1.2px;
       text-transform: uppercase;
     }
 
     .header-btns {
       display: flex;
-      gap: 10px;
+      gap: 8px;
     }
 
     .icon-btn {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-main);
-      width: 40px;
-      height: 40px;
+      width: 38px;
+      height: 38px;
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
       cursor: pointer;
-      font-size: 1.1rem;
+      font-size: 1rem;
       transition: all 0.2s;
     }
 
@@ -92,27 +97,26 @@
       background: var(--card-border);
     }
 
-    /* Status indicator */
     .status-bar {
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin: 8px 0;
-      font-size: 0.9rem;
+      margin: 4px 0 6px 0;
+      font-size: 0.85rem;
       color: var(--text-muted);
       font-weight: 600;
     }
 
     .overall-progress-bar {
       width: 100%;
-      max-width: 500px;
-      height: 6px;
+      max-width: 480px;
+      height: 5px;
       background: #1b261e;
       border-radius: 3px;
       overflow: hidden;
-      margin-bottom: 12px;
+      margin-bottom: 10px;
     }
 
     .overall-progress-fill {
@@ -125,11 +129,11 @@
     /* Main workout card */
     .workout-card {
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       background: var(--card-bg);
       border: 1px solid var(--card-border);
-      border-radius: 24px;
-      padding: 24px 20px;
+      border-radius: 22px;
+      padding: 16px 16px;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -138,14 +142,21 @@
       transition: border-color 0.4s;
     }
 
+    .card-top-row {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+
     .phase-badge {
-      font-size: 1rem;
+      font-size: 0.8rem;
       font-weight: 800;
-      letter-spacing: 2px;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-      padding: 6px 18px;
-      border-radius: 30px;
-      margin-bottom: 12px;
+      padding: 5px 14px;
+      border-radius: 20px;
       transition: all 0.3s;
     }
 
@@ -173,35 +184,88 @@
       border: 1px solid #ffd700;
     }
 
-    /* Big circular timer */
-    .timer-container {
-      position: relative;
-      width: 220px;
-      height: 220px;
+    .btn-technique {
+      background: rgba(255,255,255,0.06);
+      border: 1px solid var(--card-border);
+      color: #b0c4b6;
+      font-size: 0.75rem;
+      font-weight: 700;
+      padding: 5px 10px;
+      border-radius: 12px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+
+    /* Visual stage: Model Animation */
+    .stage-container {
+      width: 100%;
+      height: 160px;
+      background: radial-gradient(circle at 50% 80%, #1e2d24 0%, #101712 70%);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 16px;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin: 10px 0;
+      position: relative;
+      overflow: hidden;
+      margin-bottom: 10px;
+    }
+
+    .stage-floor {
+      position: absolute;
+      bottom: 12px;
+      width: 75%;
+      height: 6px;
+      background: radial-gradient(ellipse at center, rgba(0,230,118,0.3) 0%, transparent 70%);
+      border-radius: 50%;
+    }
+
+    .stage-svg {
+      width: 100%;
+      height: 100%;
+      max-height: 155px;
+    }
+
+    /* Middle Row: Compact Timer + Info */
+    .timer-and-info-row {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 14px;
+      margin: 4px 0 10px 0;
+    }
+
+    .timer-container {
+      position: relative;
+      width: 110px;
+      height: 110px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
     .timer-svg {
       transform: rotate(-90deg);
-      width: 220px;
-      height: 220px;
+      width: 110px;
+      height: 110px;
     }
 
     .timer-bg-circle {
       fill: none;
       stroke: #202b23;
-      stroke-width: 12;
+      stroke-width: 8;
     }
 
     .timer-bar-circle {
       fill: none;
       stroke: var(--primary-green);
-      stroke-width: 12;
+      stroke-width: 8;
       stroke-linecap: round;
-      stroke-dasharray: 628;
+      stroke-dasharray: 314;
       stroke-dashoffset: 0;
       transition: stroke-dashoffset 0.2s linear, stroke 0.3s;
     }
@@ -215,68 +279,66 @@
     }
 
     .time-seconds {
-      font-size: 4.8rem;
+      font-size: 2.7rem;
       font-weight: 900;
       line-height: 1;
-      letter-spacing: -2px;
+      letter-spacing: -1px;
       font-variant-numeric: tabular-nums;
     }
 
     .time-sub {
-      font-size: 0.85rem;
+      font-size: 0.65rem;
       color: var(--text-muted);
       text-transform: uppercase;
-      letter-spacing: 1.5px;
-      margin-top: 4px;
+      letter-spacing: 1px;
     }
 
-    /* Exercise details */
+    .info-container {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      text-align: left;
+    }
+
     .exercise-title {
-      font-size: 1.8rem;
+      font-size: 1.45rem;
       font-weight: 800;
-      text-align: center;
-      margin-top: 14px;
       line-height: 1.2;
       color: #fff;
     }
 
     .exercise-subtitle {
-      font-size: 0.95rem;
-      color: var(--text-muted);
-      margin-top: 4px;
-      text-align: center;
+      font-size: 0.85rem;
+      color: #81c784;
+      font-weight: 600;
+      margin-top: 3px;
     }
 
     .exercise-tip {
-      font-size: 0.85rem;
-      color: #b0c4b6;
-      background: rgba(0,0,0,0.25);
-      border-radius: 12px;
-      padding: 10px 14px;
-      margin-top: 14px;
-      text-align: center;
-      line-height: 1.4;
-      max-width: 90%;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      line-height: 1.35;
+      margin-top: 6px;
     }
 
     .next-up-container {
-      margin-top: 14px;
       width: 100%;
       background: #101612;
       border: 1px dashed var(--card-border);
-      border-radius: 12px;
-      padding: 8px 12px;
+      border-radius: 10px;
+      padding: 7px 12px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
     }
 
     .next-up-label {
       color: var(--accent-orange);
       font-weight: 700;
       text-transform: uppercase;
-      font-size: 0.75rem;
+      font-size: 0.7rem;
     }
 
     .next-up-name {
@@ -284,31 +346,31 @@
       font-weight: 600;
     }
 
-    /* Control buttons */
+    /* Controls */
     .controls-container {
       width: 100%;
-      max-width: 500px;
+      max-width: 480px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
-      margin-top: 18px;
+      gap: 12px;
+      margin-top: 14px;
     }
 
     .btn-secondary {
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       color: var(--text-main);
-      padding: 16px 20px;
-      border-radius: 18px;
-      font-size: 1rem;
+      padding: 14px 16px;
+      border-radius: 16px;
+      font-size: 0.95rem;
       font-weight: 600;
       flex: 1;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
+      gap: 6px;
       transition: all 0.2s;
     }
 
@@ -321,23 +383,22 @@
       background: linear-gradient(135deg, #00e676, #00b248);
       border: none;
       color: #05210c;
-      padding: 18px 30px;
-      border-radius: 20px;
-      font-size: 1.3rem;
+      padding: 16px 24px;
+      border-radius: 18px;
+      font-size: 1.2rem;
       font-weight: 800;
       flex: 1.8;
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 10px;
+      gap: 8px;
       box-shadow: 0 6px 20px rgba(0, 230, 118, 0.35);
       transition: all 0.2s;
     }
 
     .btn-primary:active {
       transform: scale(0.96);
-      box-shadow: 0 2px 10px rgba(0, 230, 118, 0.2);
     }
 
     .btn-primary.paused {
@@ -346,27 +407,23 @@
       box-shadow: 0 6px 20px rgba(255, 145, 0, 0.35);
     }
 
-    /* Bottom quick tips */
     .bottom-hint {
       font-size: 0.75rem;
       color: var(--text-muted);
       text-align: center;
-      margin-top: 12px;
+      margin-top: 8px;
     }
 
-    /* Modal dialogs */
+    /* Modals */
     .modal-overlay {
       position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0,0,0,0.75);
-      backdrop-filter: blur(4px);
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.8);
+      backdrop-filter: blur(5px);
       display: flex;
       align-items: center;
       justify-content: center;
-      padding: 20px;
+      padding: 16px;
       z-index: 100;
       opacity: 0;
       pointer-events: none;
@@ -382,7 +439,7 @@
       background: var(--card-bg);
       border: 1px solid var(--card-border);
       border-radius: 20px;
-      padding: 24px;
+      padding: 20px;
       width: 100%;
       max-width: 440px;
       max-height: 85vh;
@@ -393,11 +450,11 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      margin-bottom: 20px;
+      margin-bottom: 16px;
     }
 
     .modal-title {
-      font-size: 1.25rem;
+      font-size: 1.2rem;
       font-weight: 800;
     }
 
@@ -405,67 +462,52 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 12px 0;
+      padding: 10px 0;
       border-bottom: 1px solid rgba(255,255,255,0.06);
     }
 
-    .setting-label {
-      font-size: 0.95rem;
-      font-weight: 600;
-    }
-
-    .setting-sub {
-      font-size: 0.8rem;
-      color: var(--text-muted);
-    }
+    .setting-label { font-size: 0.9rem; font-weight: 600; }
+    .setting-sub { font-size: 0.75rem; color: var(--text-muted); }
 
     .setting-input {
       background: #0d120f;
       border: 1px solid var(--card-border);
       color: #fff;
-      padding: 8px 12px;
+      padding: 6px 10px;
       border-radius: 8px;
-      width: 70px;
+      width: 65px;
       text-align: center;
       font-weight: 700;
-      font-size: 1rem;
+      font-size: 0.95rem;
     }
 
     .switch {
       position: relative;
       display: inline-block;
-      width: 48px;
-      height: 28px;
+      width: 46px;
+      height: 26px;
     }
 
     .switch input { opacity: 0; width: 0; height: 0; }
-
     .slider {
       position: absolute;
       cursor: pointer;
       top: 0; left: 0; right: 0; bottom: 0;
       background-color: #29382e;
       transition: .3s;
-      border-radius: 28px;
+      border-radius: 26px;
     }
-
     .slider:before {
       position: absolute;
       content: "";
-      height: 20px; width: 20px;
+      height: 18px; width: 18px;
       left: 4px; bottom: 4px;
       background-color: white;
       transition: .3s;
       border-radius: 50%;
     }
-
-    input:checked + .slider {
-      background-color: var(--primary-green);
-    }
-
-    input:checked + .slider:before {
-      transform: translateX(20px);
-    }
+    input:checked + .slider { background-color: var(--primary-green); }
+    input:checked + .slider:before { transform: translateX(20px); }
 
     .exercise-list-item {
       display: flex;
@@ -479,8 +521,8 @@
     }
 
     .exercise-list-num {
-      width: 28px;
-      height: 28px;
+      width: 26px;
+      height: 26px;
       border-radius: 50%;
       background: var(--military-green);
       display: flex;
@@ -495,13 +537,129 @@
       background: var(--military-green);
       color: #fff;
       border: none;
-      padding: 14px;
+      padding: 12px;
       border-radius: 12px;
       font-weight: 700;
-      font-size: 1rem;
-      margin-top: 16px;
+      font-size: 0.95rem;
+      margin-top: 14px;
       cursor: pointer;
     }
+
+    /* Technique modal content */
+    .technique-box {
+      background: #111713;
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 14px;
+      margin-bottom: 12px;
+    }
+    .technique-box h4 {
+      color: var(--primary-green);
+      font-size: 0.9rem;
+      margin-bottom: 6px;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .technique-box p {
+      font-size: 0.82rem;
+      color: #c8d6cb;
+      line-height: 1.45;
+    }
+
+    /* ============================================================
+       CSS ANIMATIONS FOR ATHLETIC FITNESS MODEL
+       ============================================================ */
+    .anim-running {
+      animation-play-state: running !important;
+    }
+    .anim-paused {
+      animation-play-state: paused !important;
+    }
+
+    /* 1. High Knees (Knieheffen) */
+    @keyframes animHighKneeL {
+      0%, 100% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-38px) rotate(-32deg); }
+    }
+    @keyframes animHighKneeR {
+      0%, 100% { transform: translateY(-38px) rotate(-32deg); }
+      50% { transform: translateY(0px) rotate(0deg); }
+    }
+    @keyframes animArmL {
+      0%, 100% { transform: rotate(28deg); }
+      50% { transform: rotate(-28deg); }
+    }
+    @keyframes animArmR {
+      0%, 100% { transform: rotate(-28deg); }
+      50% { transform: rotate(28deg); }
+    }
+    @keyframes animBodyBounce {
+      0%, 50%, 100% { transform: translateY(0px); }
+      25%, 75% { transform: translateY(-8px); }
+    }
+
+    /* 2. Glute Kickback */
+    @keyframes animKickbackLeg {
+      0%, 100% { transform: rotate(0deg); }
+      50% { transform: rotate(45deg) translate(8px, -14px); }
+    }
+
+    /* 3. Froggers */
+    @keyframes animFrogger {
+      0%, 100% { transform: translateX(0px) translateY(0px) scale(1, 1); }
+      45%, 55% { transform: translateX(-40px) translateY(12px) scale(0.9, 0.95); }
+    }
+
+    /* 4. Surrender Squat */
+    @keyframes animSurrender {
+      0%, 100% { transform: translateY(0px); }
+      30% { transform: translateY(18px); }
+      50% { transform: translateY(32px); }
+      75% { transform: translateY(16px); }
+    }
+
+    /* 5. Half Burpee */
+    @keyframes animBurpee {
+      0%, 100% { transform: translateY(0px) scale(1, 1); }
+      25% { transform: translateY(28px) scale(0.95, 0.9); }
+      50% { transform: translateY(38px) scale(1.1, 0.85); }
+      75% { transform: translateY(22px) scale(0.95, 0.95); }
+    }
+
+    /* 6. Skaters */
+    @keyframes animSkater {
+      0%, 100% { transform: translateX(-24px) rotate(-5deg); }
+      50% { transform: translateX(24px) rotate(5deg); }
+    }
+
+    /* 7. Plank Jacks */
+    @keyframes animPlankJackFeet {
+      0%, 100% { transform: scaleX(0.7); }
+      50% { transform: scaleX(1.35); }
+    }
+
+    /* 8. Squat Jumps */
+    @keyframes animSquatJump {
+      0%, 100% { transform: translateY(0px); }
+      35% { transform: translateY(25px) scale(1.05, 0.88); }
+      60% { transform: translateY(-38px) scale(0.95, 1.1); }
+      80% { transform: translateY(-5px); }
+    }
+
+    .anim-hk-l { animation: animHighKneeL 0.65s infinite ease-in-out; transform-origin: 100px 85px; }
+    .anim-hk-r { animation: animHighKneeR 0.65s infinite ease-in-out; transform-origin: 100px 85px; }
+    .anim-arm-l { animation: animArmL 0.65s infinite ease-in-out; transform-origin: 100px 52px; }
+    .anim-arm-r { animation: animArmR 0.65s infinite ease-in-out; transform-origin: 100px 52px; }
+    .anim-bounce { animation: animBodyBounce 0.65s infinite ease-in-out; }
+
+    .anim-kick { animation: animKickbackLeg 1.2s infinite ease-in-out; transform-origin: 135px 85px; }
+    .anim-frog { animation: animFrogger 1.3s infinite ease-in-out; transform-origin: 140px 90px; }
+    .anim-surr { animation: animSurrender 2.2s infinite ease-in-out; transform-origin: 100px 140px; }
+    .anim-burp { animation: animBurpee 1.6s infinite ease-in-out; transform-origin: 100px 140px; }
+    .anim-skate { animation: animSkater 1.1s infinite ease-in-out; transform-origin: 100px 140px; }
+    .anim-pjack { animation: animPlankJackFeet 0.75s infinite ease-in-out; transform-origin: 155px 95px; }
+    .anim-sjump { animation: animSquatJump 1.25s infinite ease-in-out; transform-origin: 100px 130px; }
   </style>
 </head>
 <body>
@@ -528,24 +686,38 @@
 
   <!-- Hoofdkaart -->
   <div class="workout-card" id="main-card">
-    <div class="phase-badge prep" id="phase-badge">VOORBEREIDEN</div>
+    <div class="card-top-row">
+      <div class="phase-badge prep" id="phase-badge">VOORBEREIDEN</div>
+      <button class="btn-technique" id="btn-show-technique">💡 Instructie</button>
+    </div>
 
-    <!-- Cirkel Timer -->
-    <div class="timer-container">
-      <svg class="timer-svg" viewBox="0 0 220 220">
-        <circle class="timer-bg-circle" cx="110" cy="110" r="95"></circle>
-        <circle class="timer-bar-circle" id="timer-progress" cx="110" cy="110" r="95"></circle>
-      </svg>
-      <div class="timer-display">
-        <span class="time-seconds" id="display-seconds">10</span>
-        <span class="time-sub" id="display-sub">SECONDEN</span>
+    <!-- Visueel Podium met Geanimeerde Fitness Atlete -->
+    <div class="stage-container">
+      <div class="stage-floor"></div>
+      <div id="svg-stage-wrapper" style="width:100%;height:100%;display:flex;align-items:center;justify-content:center;">
+        <!-- Dynamisch SVG model wordt hier ingeladen -->
       </div>
     </div>
 
-    <!-- Oefening Informatie -->
-    <h1 class="exercise-title" id="exercise-name">High Knees</h1>
-    <div class="exercise-subtitle" id="exercise-sub">Knieheffen | Conditie & Benen</div>
-    <div class="exercise-tip" id="exercise-tip">Ren krachtig op de plaats en breng je knieën omhoog tot heuphoogte!</div>
+    <!-- Middenrij: Compacte Cirkel Timer + Tekst -->
+    <div class="timer-and-info-row">
+      <div class="timer-container">
+        <svg class="timer-svg" viewBox="0 0 110 110">
+          <circle class="timer-bg-circle" cx="55" cy="55" r="48"></circle>
+          <circle class="timer-bar-circle" id="timer-progress" cx="55" cy="55" r="48"></circle>
+        </svg>
+        <div class="timer-display">
+          <span class="time-seconds" id="display-seconds">10</span>
+          <span class="time-sub" id="display-sub">SEC</span>
+        </div>
+      </div>
+
+      <div class="info-container">
+        <h1 class="exercise-title" id="exercise-name">High Knees</h1>
+        <div class="exercise-subtitle" id="exercise-sub">Knieheffen | Conditie & Core</div>
+        <div class="exercise-tip" id="exercise-tip">Pomp je armen mee en hef je knieën tot heuphoogte!</div>
+      </div>
+    </div>
 
     <!-- Volgende Oefening Preview -->
     <div class="next-up-container" id="next-up-box">
@@ -562,7 +734,39 @@
   </div>
 
   <div class="bottom-hint">
-    📲 Tip voor Samsung: Tik rechtsboven op ⋮ en kies <b>"Toevoegen aan startscherm"</b>
+    💪 10 Min Military Calisthenics | Instructiemodel & Techniek
+  </div>
+
+  <!-- Techniek & Instructie Modal -->
+  <div class="modal-overlay" id="modal-technique">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h2 class="modal-title" id="tech-modal-title">📖 Oefening Instructie</h2>
+        <button class="icon-btn" id="btn-close-technique">✕</button>
+      </div>
+
+      <div class="technique-box">
+        <h4>🎯 Doel & Spiergroepen</h4>
+        <p id="tech-target">Cardio, quadriceps, heupflexoren en core spieren.</p>
+      </div>
+
+      <div class="technique-box">
+        <h4>📌 Uitvoering & Houding</h4>
+        <p id="tech-posture">Sta rechtop met je borst vooruit en schouders ontspannen. Ren op de bal van je voeten op de plaats en til je knieën krachtig op tot minimaal 90 graden (heuphoogte). Pomp je armen actief mee.</p>
+      </div>
+
+      <div class="technique-box">
+        <h4>💨 Ademhaling & Tempo</h4>
+        <p id="tech-breathing">Adem ritmisch in door de neus en uit door de mond. Houd een constant, hoog tempo aan gedurende de volledige 30 seconden.</p>
+      </div>
+
+      <div class="technique-box" style="border-color: rgba(255, 82, 82, 0.4);">
+        <h4 style="color: var(--danger-red);">⚠️ Veelgemaakte Fouten</h4>
+        <p id="tech-mistakes">Achterover leunen (houd je bovenlichaam juist licht naar voren) of knieën te laag laten zakken.</p>
+      </div>
+
+      <button class="btn-full" id="btn-close-technique-2">Begrepen, terug naar workout</button>
+    </div>
   </div>
 
   <!-- Instellingen Modal -->
@@ -576,7 +780,7 @@
       <div class="setting-row">
         <div>
           <div class="setting-label">Werkduur per oefening</div>
-          <div class="setting-sub">Aantal seconden inspanning (video: 30s)</div>
+          <div class="setting-sub">Seconden inspanning (video: 30s)</div>
         </div>
         <input type="number" class="setting-input" id="cfg-work" value="30" min="10" max="120">
       </div>
@@ -584,7 +788,7 @@
       <div class="setting-row">
         <div>
           <div class="setting-label">Rustduur</div>
-          <div class="setting-sub">Seconden rust tussen oefeningen (standaard 10s)</div>
+          <div class="setting-sub">Rust tussen oefeningen (video: 10s)</div>
         </div>
         <input type="number" class="setting-input" id="cfg-rest" value="10" min="5" max="60">
       </div>
@@ -592,7 +796,7 @@
       <div class="setting-row">
         <div>
           <div class="setting-label">Rust tussen rondes</div>
-          <div class="setting-sub">Hersteltijd tussen ronde 1 en 2 (standaard 25s)</div>
+          <div class="setting-sub">Hersteltijd ronde 1 & 2 (standaard 25s)</div>
         </div>
         <input type="number" class="setting-input" id="cfg-round-rest" value="25" min="10" max="90">
       </div>
@@ -647,65 +851,334 @@
   </div>
 
   <script>
-    // 8 Oefeningen uit de Military Calisthenics video (og6JnLLOdFw)
+    // 8 Oefeningen met gedetailleerde instructies
     const EXERCISES = [
       {
         id: 1,
         name: "High Knees",
         nl: "Knieheffen",
         sub: "Cardio, Quads & Buikspieren",
-        tip: "Pomp je armen mee en breng je knieën omhoog tot heuphoogte. Blijf op de bal van je voeten springen."
+        tip: "Pomp je armen mee en hef je knieën tot heuphoogte!",
+        target: "Quadriceps, kuiten, heupbuigers en buikspieren (cardiovasculair)",
+        posture: "Sta rechtop met je borst omhoog. Ren explosief op de plaats op de bal van je voeten. Breng je knieën krachtig omhoog tot heuphoogte (90°). Beweeg je armen reciprocal mee.",
+        breathing: "Adem diep en ritmisch door de neus in en krachtig door de mond uit. Houd het tempo 30 seconden strak.",
+        mistakes: "Achterover hangen van de romp of knieën niet hoog genoeg optrekken."
       },
       {
         id: 2,
         name: "Glute Kickbacks",
         nl: "Billen Kickbacks",
         sub: "Glutes & Hamstrings",
-        tip: "Handen en knieën op de vloer (of staand). Trap gecontroleerd naar achteren en knijp bovenin je bilspier aan."
+        tip: "Handen en knieën op de vloer, schop gecontroleerd omhoog!",
+        target: "Grote bilspier (Gluteus Maximus) en hamstrings",
+        posture: "Plaats handen onder de schouders en knieën onder de heupen. Houd de rug neutraal en buikspieren aangespannen. Schop één been gecontroleerd naar achteren en omhoog, knijp bovenin de bilspier 1 tel aan.",
+        breathing: "Uitademen bij het omhoog schoppen, inademen bij het terugbrengen naar de vloer.",
+        mistakes: "Te ver doorknikken in de onderrug (holle rug trekken). Houd de core strak."
       },
       {
         id: 3,
         name: "Froggers",
         nl: "Kikkersprongen",
-        sub: "Hele lichaam, Heupen & Explosiviteit",
-        tip: "Begin in hoge plank. Spring met beide voeten naar de buitenkant van je handen in een diepe lage squat en spring terug."
+        sub: "Full Body & Heupmobiliteit",
+        tip: "Vanuit plank met beide voeten naar buitenkant handen springen!",
+        target: "Heupflexoren, quads, schouders en stabiliserende core",
+        posture: "Start in een hoge opdrukplank. Spring explosief met beide voeten tegelijk naar voren, net aan de buitenkant van je handen in een diepe kikker-squat. Houd je handen aan de grond en spring direct terug naar plank.",
+        breathing: "Blaas uit wanneer je naar voren springt, adem in wanneer je terugspringt naar de plank.",
+        mistakes: "Doorzakken in de heupen bij de plank of voeten niet plat kunnen neerzetten."
       },
       {
         id: 4,
         name: "Surrender Squats",
         nl: "Overgave Squats",
         sub: "Quads, Balans & Core",
-        tip: "Handen achter het hoofd. Zak knielend met één knie naar de vloer, dan de andere, en stap voet voor voet terug omhoog."
+        tip: "Handen achter je hoofd, kniel voet voor voet en sta op!",
+        target: "Bovenbenen (quadriceps), bilspieren en core-balans",
+        posture: "Plaats je handen achter je hoofd ('surrender' houding). Zak vanuit stand met één knie rustig naar de grond, dan de andere knie (volledig knielend). Stap daarna met je eerste been naar voren in een squat en druk jezelf omhoog tot stand.",
+        breathing: "Rustig en beheerst ademhalen; wissel halverwege eventueel van leidend been.",
+        mistakes: "Knieën hard op de grond laten vallen; voer de beweging zacht en gecontroleerd uit."
       },
       {
         id: 5,
         name: "Half Burpees",
         nl: "Halve Burpees",
-        sub: "Cardio & Core",
-        tip: "Vanuit stand handen op de grond, spring naar plank en spring direct weer met je voeten naar voren en sta op."
+        sub: "Cardio & Explosieve Kracht",
+        tip: "Handen naar de vloer, spring naar plank en spring meteen op!",
+        target: "Hele lichaam, borst, schouders, buikspieren en benen",
+        posture: "Zak door je knieën en zet je handen stevig op schouderbreedte op de grond. Spring met beide benen naar achteren in een rechte plank. Spring direct weer krachtig terug met je voeten naar je handen en kom rechtop te staan.",
+        breathing: "Adem krachtig uit bij het omhoog komen tot stand.",
+        mistakes: "Romp laten doorhangen in de plankpositie; houd je buikspieren strak aangespannen."
       },
       {
         id: 6,
         name: "Skaters",
         nl: "Schaatsers",
-        sub: "Zijwaartse beenspieren & Stabiliteit",
-        tip: "Spring zijwaarts van links naar rechts, kruis je achterste been achterlangs en zwaai je armen mee als een schaatser."
+        sub: "Laterale Kracht & Stabiliteit",
+        tip: "Spring zijwaarts van been naar been, kruis je been achterlangs!",
+        target: "Zijwaartse bilspieren (Gluteus Medius), adductoren en balans",
+        posture: "Spring krachtig zijwaarts naar rechts en land zachtjes op je rechterbeen met een licht gebogen knie. Zwaai je linkerbeen kruislings achterlangs en zwaai je armen mee als een schaatser. Spring direct door naar links.",
+        breathing: "Adem in bij afzet, adem uit bij de sprong naar de andere kant.",
+        mistakes: "Met een stijve knie landen; vang elke sprong altijd veerkrachtig op met gebogen knie."
       },
       {
         id: 7,
         name: "Plank Jacks",
         nl: "Plank Jacks",
-        sub: "Schouders, Core & Calves",
-        tip: "Blijf in een strakke plank (buik aanspannen) en spring met je voeten open en dicht zoals bij jumping jacks."
+        sub: "Core, Schouders & Calves",
+        tip: "Blijf in strakke plank en spring met je voeten open en dicht!",
+        target: "Diepe buikspieren, dwarse buikspier, schouders en kuiten",
+        posture: "Neem een rechte opdrukplankpositie aan met handen direct onder de schouders. Houd je lichaam in één kaarsrechte lijn van kruin tot hielen. Spring met beide voeten tegelijk uit elkaar (wijd) en weer terug naar elkaar (gesloten).",
+        breathing: "Blijf gelijkmatig doorademen en houd je heupen stil op dezelfde hoogte.",
+        mistakes: "Heupen die omhoog wippen als een tent of juist doorzakken naar de vloer."
       },
       {
         id: 8,
         name: "Squat Jumps",
         nl: "Squat Sprongen",
-        sub: "Explosieve Benen & Kuiten",
-        tip: "Zak in een diepe squat en explodeer krachtig omhoog in de lucht. Vang de landing zachtjes op en zak meteen door."
+        sub: "Explosieve Beenspieren",
+        tip: "Zak in diepe squat en explodeer hoog in de lucht!",
+        target: "Quadriceps, hamstrings, kuiten en bilspieren",
+        posture: "Zet je voeten op schouderbreedte. Zak met de heupen naar achteren in een diepe squat (alsof je op een stoel gaat zitten) tot 90 graden. Explodeer direct krachtig vanuit je hielen omhoog in een sprong. Land zacht en zak meteen door.",
+        breathing: "Inademen bij het zakken, krachtig uitblazen bij de explosieve sprong.",
+        mistakes: "Knieën die naar binnen vallen bij het afzetten of hard neerkomen op gestrekte benen."
       }
     ];
+
+    // SVG modellen genereren voor elke oefening met atletisch fitnessmodel
+    function getExerciseSVG(exerciseId, isPlaying) {
+      const playClass = isPlaying ? "anim-running" : "anim-paused";
+
+      // 1. High Knees (Hardlopen / knieheffen)
+      if (exerciseId === 1) {
+        return `
+          <svg class="stage-svg" viewBox="0 0 200 160">
+            <g class="anim-bounce ${playClass}">
+              <ellipse cx="100" cy="30" rx="9" ry="11" fill="var(--athlete-skin)" />
+              <path d="M 94 22 C 96 16 106 16 109 23 C 111 29 108 34 107 36 C 104 36 94 34 94 22 Z" fill="var(--athlete-hair)" />
+              <path d="M 94 24 C 84 20 80 27 75 35 C 74 38 78 40 82 34 C 86 28 92 27 94 25 Z" fill="var(--athlete-hair)" />
+              
+              <path d="M 95 41 L 105 41 L 103 68 L 97 68 Z" fill="var(--athlete-top)" />
+              <rect x="97" y="68" width="6" height="12" fill="var(--athlete-skin)" />
+              <path d="M 95 80 L 105 80 L 104 90 L 96 90 Z" fill="var(--athlete-legging)" />
+
+              <g class="anim-hk-l ${playClass}">
+                <path d="M 97 88 L 94 116 L 93 140" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                <ellipse cx="93" cy="142" rx="6" ry="3" fill="var(--athlete-shoes)" />
+              </g>
+
+              <g class="anim-hk-r ${playClass}">
+                <path d="M 103 88 L 110 114 L 112 138" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+                <ellipse cx="113" cy="140" rx="6" ry="3" fill="var(--athlete-shoes)" />
+              </g>
+
+              <g class="anim-arm-l ${playClass}">
+                <path d="M 96 46 L 86 62 L 95 72" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </g>
+
+              <g class="anim-arm-r ${playClass}">
+                <path d="M 104 46 L 115 58 L 107 72" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              </g>
+
+              <path d="M 125 120 L 125 90 M 121 95 L 125 90 L 129 95" stroke="var(--primary-green)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            </g>
+          </svg>
+        `;
+      }
+
+      // 2. Glute Kickback
+      if (exerciseId === 2) {
+        return `
+          <svg class="stage-svg" viewBox="0 0 200 160">
+            <ellipse cx="65" cy="62" rx="9" ry="8" fill="var(--athlete-skin)" />
+            <path d="M 60 56 C 65 52 74 54 74 62 C 68 66 60 66 60 56 Z" fill="var(--athlete-hair)" />
+            <path d="M 60 62 C 55 68 53 74 53 78 C 55 79 58 76 60 70 Z" fill="var(--athlete-hair)" />
+
+            <rect x="74" y="65" width="45" height="15" rx="5" fill="var(--athlete-top)" />
+            <ellipse cx="125" cy="72" rx="14" ry="12" fill="var(--athlete-legging)" />
+
+            <line x1="82" y1="78" x2="82" y2="128" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" />
+            <line x1="88" y1="78" x2="88" y2="128" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" />
+
+            <path d="M 122 80 L 116 112 L 128 128" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+            <ellipse cx="130" cy="128" rx="5" ry="3" fill="var(--athlete-shoes)" />
+
+            <g class="anim-kick ${playClass}">
+              <path d="M 132 75 L 158 68 L 180 50" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="182" cy="48" rx="6" ry="4" fill="var(--athlete-shoes)" />
+              <circle cx="135" cy="72" r="7" fill="rgba(0,230,118,0.4)" />
+            </g>
+
+            <path d="M 160 85 C 172 75 178 62 182 52 M 176 52 L 182 52 L 184 58" stroke="var(--primary-green)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+          </svg>
+        `;
+      }
+
+      // 3. Froggers
+      if (exerciseId === 3) {
+        return `
+          <svg class="stage-svg" viewBox="0 0 200 160">
+            <g class="anim-frog ${playClass}">
+              <circle cx="65" cy="128" r="5" fill="var(--athlete-skin)" />
+              <line x1="65" y1="128" x2="80" y2="80" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" />
+
+              <ellipse cx="86" cy="68" rx="9" ry="8" fill="var(--athlete-skin)" />
+              <path d="M 80 62 C 86 58 95 62 94 70 C 88 74 80 72 80 62 Z" fill="var(--athlete-hair)" />
+              <path d="M 82 76 L 115 85 L 112 100 L 80 92 Z" fill="var(--athlete-top)" />
+
+              <ellipse cx="120" cy="95" rx="14" ry="12" fill="var(--athlete-legging)" />
+              <path d="M 125 96 L 150 115 L 175 128" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="177" cy="128" rx="6" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 155 110 L 100 110 M 108 105 L 100 110 L 108 115" stroke="var(--primary-green)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+              <path d="M 100 120 L 155 120 M 147 115 L 155 120 L 147 125" stroke="var(--accent-orange)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            </g>
+          </svg>
+        `;
+      }
+
+      // 4. Surrender Squats
+      if (exerciseId === 4) {
+        return `
+          <svg class="stage-svg" viewBox="0 0 200 160">
+            <g class="anim-surr ${playClass}">
+              <ellipse cx="100" cy="38" rx="9" ry="11" fill="var(--athlete-skin)" />
+              <path d="M 94 30 C 97 25 106 25 108 32 C 107 42 94 42 94 30 Z" fill="var(--athlete-hair)" />
+              <path d="M 95 50 L 86 42 L 94 36 M 105 50 L 114 42 L 106 36" stroke="var(--athlete-skin)" stroke-width="5" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+              <path d="M 94 50 L 106 50 L 104 78 L 96 78 Z" fill="var(--athlete-top)" />
+              <ellipse cx="100" cy="84" rx="11" ry="8" fill="var(--athlete-legging)" />
+
+              <path d="M 96 86 L 90 108 L 98 136" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="98" cy="138" rx="6" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 104 86 L 112 110 L 115 136" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="116" cy="138" rx="6" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 130 65 L 130 95 M 126 90 L 130 95 L 134 90" stroke="var(--accent-orange)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+              <path d="M 138 95 L 138 65 M 134 70 L 138 65 L 142 70" stroke="var(--primary-green)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            </g>
+          </svg>
+        `;
+      }
+
+      // 5. Half Burpee
+      if (exerciseId === 5) {
+        return `
+          <svg class="stage-svg" viewBox="0 0 200 160">
+            <g class="anim-burp ${playClass}">
+              <ellipse cx="90" cy="50" rx="9" ry="10" fill="var(--athlete-skin)" />
+              <path d="M 84 42 C 90 38 98 42 97 50 C 93 54 84 54 84 42 Z" fill="var(--athlete-hair)" />
+              <path d="M 87 60 L 105 65 L 102 90 L 85 86 Z" fill="var(--athlete-top)" />
+
+              <path d="M 88 64 L 75 92 L 68 128" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+
+              <ellipse cx="106" cy="94" rx="12" ry="10" fill="var(--athlete-legging)" />
+              <path d="M 106 98 L 126 114 L 150 128" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="152" cy="128" rx="6" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 125 80 L 125 50 M 120 56 L 125 50 L 130 56" stroke="var(--primary-green)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            </g>
+          </svg>
+        `;
+      }
+
+      // 6. Skaters
+      if (exerciseId === 6) {
+        return `
+          <svg class="stage-svg" viewBox="0 0 200 160">
+            <g class="anim-skate ${playClass}">
+              <ellipse cx="100" cy="45" rx="9" ry="10" fill="var(--athlete-skin)" />
+              <path d="M 94 38 C 98 34 107 36 107 45 C 104 50 94 50 94 38 Z" fill="var(--athlete-hair)" />
+              <path d="M 94 43 C 86 42 80 47 74 53 C 78 57 84 52 90 48 Z" fill="var(--athlete-hair)" />
+
+              <path d="M 95 55 L 106 58 L 103 84 L 94 82 Z" fill="var(--athlete-top)" />
+
+              <path d="M 96 62 L 78 72 L 68 85" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" fill="none" />
+              <path d="M 105 62 L 124 70 L 138 65" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" fill="none" />
+
+              <path d="M 98 84 L 92 110 L 96 138" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="96" cy="140" rx="6" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 102 84 L 120 106 L 142 126" stroke="var(--athlete-legging)" stroke-width="7" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="144" cy="128" rx="5" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 65 130 L 135 130 M 75 125 L 65 130 L 75 135 M 125 125 L 135 130 L 125 135" stroke="var(--primary-green)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            </g>
+          </svg>
+        `;
+      }
+
+      // 7. Plank Jacks
+      if (exerciseId === 7) {
+        return `
+          <svg class="stage-svg" viewBox="0 0 200 160">
+            <circle cx="55" cy="115" r="5" fill="var(--athlete-skin)" />
+            <line x1="55" y1="115" x2="68" y2="75" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" />
+            <circle cx="68" cy="115" r="5" fill="var(--athlete-skin)" />
+            <line x1="68" y1="115" x2="78" y2="75" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" />
+
+            <ellipse cx="72" cy="62" rx="9" ry="8" fill="var(--athlete-skin)" />
+            <path d="M 68 56 C 74 52 82 55 82 63 C 76 67 68 67 68 56 Z" fill="var(--athlete-hair)" />
+
+            <path d="M 72 72 L 125 82 L 122 96 L 70 86 Z" fill="var(--athlete-top)" />
+            <ellipse cx="128" cy="90" rx="12" ry="10" fill="var(--athlete-legging)" />
+
+            <g class="anim-pjack ${playClass}">
+              <path d="M 132 90 L 158 98 L 180 115" stroke="var(--athlete-legging)" stroke-width="7" stroke-linecap="round" fill="none" />
+              <ellipse cx="182" cy="116" rx="5" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 132 90 L 158 84 L 180 75" stroke="var(--athlete-legging)" stroke-width="7" stroke-linecap="round" fill="none" />
+              <ellipse cx="182" cy="74" rx="5" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 182 85 L 182 105 M 178 90 L 182 85 L 186 90 M 178 100 L 182 105 L 186 100" stroke="var(--primary-green)" stroke-width="2.5" stroke-linecap="round" fill="none" />
+            </g>
+          </svg>
+        `;
+      }
+
+      // 8. Squat Jump
+      if (exerciseId === 8) {
+        return `
+          <svg class="stage-svg" viewBox="0 0 200 160">
+            <g class="anim-sjump ${playClass}">
+              <ellipse cx="100" cy="38" rx="9" ry="11" fill="var(--athlete-skin)" />
+              <path d="M 94 30 C 97 25 106 25 108 32 C 107 42 94 42 94 30 Z" fill="var(--athlete-hair)" />
+              <path d="M 94 32 C 86 28 80 34 76 40 C 80 43 86 38 92 34 Z" fill="var(--athlete-hair)" />
+
+              <path d="M 94 50 L 106 50 L 104 76 L 96 76 Z" fill="var(--athlete-top)" />
+              <ellipse cx="100" cy="82" rx="12" ry="9" fill="var(--athlete-legging)" />
+
+              <path d="M 95 55 L 82 42 L 74 25" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" fill="none" />
+              <path d="M 105 55 L 118 42 L 126 25" stroke="var(--athlete-skin)" stroke-width="6" stroke-linecap="round" fill="none" />
+
+              <path d="M 96 84 L 90 108 L 94 136" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="94" cy="138" rx="6" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 104 84 L 110 108 L 106 136" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" stroke-linejoin="round" fill="none" />
+              <ellipse cx="106" cy="138" rx="6" ry="3" fill="var(--athlete-shoes)" />
+
+              <path d="M 70 90 L 70 45 M 65 55 L 70 45 L 75 55" stroke="var(--primary-green)" stroke-width="3" stroke-linecap="round" fill="none" />
+              <path d="M 130 90 L 130 45 M 125 55 L 130 45 L 135 55" stroke="var(--primary-green)" stroke-width="3" stroke-linecap="round" fill="none" />
+            </g>
+          </svg>
+        `;
+      }
+
+      // Rust / Voorbereiding / Afronding fallback
+      return `
+        <svg class="stage-svg" viewBox="0 0 200 160">
+          <g>
+            <ellipse cx="100" cy="45" rx="10" ry="12" fill="var(--athlete-skin)" />
+            <path d="M 93 36 C 96 28 107 28 109 36 C 107 48 93 48 93 36 Z" fill="var(--athlete-hair)" />
+            <path d="M 95 58 L 105 58 L 103 86 L 97 86 Z" fill="var(--athlete-top)" />
+            <path d="M 96 64 L 84 82 L 95 98 M 104 64 L 116 82 L 105 98" stroke="var(--athlete-skin)" stroke-width="5" stroke-linecap="round" fill="none" />
+            <path d="M 97 86 L 92 112 L 92 140 M 103 86 L 108 112 L 108 140" stroke="var(--athlete-legging)" stroke-width="8" stroke-linecap="round" fill="none" />
+            <ellipse cx="92" cy="142" rx="6" ry="3" fill="var(--athlete-shoes)" />
+            <ellipse cx="108" cy="142" rx="6" ry="3" fill="var(--athlete-shoes)" />
+            <text x="100" y="24" fill="var(--primary-green)" font-size="11" font-weight="bold" text-anchor="middle">MAAK JE KLAAR</text>
+          </g>
+        </svg>
+      `;
+    }
 
     // Instellingen
     let config = {
@@ -718,15 +1191,14 @@
       vibrate: true
     };
 
-    // Workout generator (twee rondes van 8 oefeningen)
     function buildWorkoutQueue() {
       const queue = [];
-      // 10 sec start voorbereiding
       queue.push({
         type: 'prep',
+        exerciseId: 1,
         title: 'Voorbereiden',
         sub: 'Maak je klaar voor Ronde 1!',
-        tip: 'Zorg voor wat ruimte en water bij de hand.',
+        tip: 'Zorg voor wat ruimte en een flesje water bij de hand.',
         duration: 10,
         round: 1,
         stepIndex: 0,
@@ -735,10 +1207,10 @@
 
       for (let r = 1; r <= config.totalRounds; r++) {
         EXERCISES.forEach((ex, idx) => {
-          // Werk fase
           queue.push({
             type: 'work',
             exercise: ex,
+            exerciseId: ex.id,
             title: ex.name,
             sub: `${ex.nl} | ${ex.sub}`,
             tip: ex.tip,
@@ -750,13 +1222,13 @@
               : (r < config.totalRounds ? 'Ronde Rust' : 'Afsluiting!')
           });
 
-          // Rust fase (tenzij het de allerlaatste oefening van de laatste ronde is)
           if (!(r === config.totalRounds && idx === EXERCISES.length - 1)) {
             const isRoundBreak = (idx === EXERCISES.length - 1);
             queue.push({
               type: 'rest',
+              exerciseId: isRoundBreak ? 1 : EXERCISES[idx + 1].id,
               title: isRoundBreak ? 'HALVERWEGE RUST!' : 'RUST',
-              sub: isRoundBreak ? `Ronde 1 voltooid! Even op adem komen voor Ronde 2.` : 'Haal diep adem en drink een slokje.',
+              sub: isRoundBreak ? `Ronde 1 voltooid! Even op adem komen voor Ronde 2.` : 'Haal diep adem en herstel.',
               tip: isRoundBreak ? 'Schud je benen en armen even los.' : `Bereid je voor op de volgende oefening:`,
               duration: isRoundBreak ? config.roundRestSec : config.restSec,
               round: r,
@@ -769,11 +1241,11 @@
         });
       }
 
-      // Finish fase
       queue.push({
         type: 'done',
+        exerciseId: 0,
         title: 'MISSIE VOLBRACHT!',
-        sub: 'Geweldig gewerkt! 10 minuten Military Calisthenics voltooid!',
+        sub: '10 minuten Military Calisthenics voltooid!',
         tip: 'Blijf even rustig uitlopen en drink voldoende water.',
         duration: 0,
         round: config.totalRounds,
@@ -790,9 +1262,8 @@
     let timerInterval = null;
     let isRunning = false;
     let wakeLock = null;
-
-    // Web Audio synthesizer voor piepjes
     let audioCtx = null;
+
     function playBeep(freq = 880, duration = 0.15, type = 'sine') {
       if (!config.sound) return;
       try {
@@ -808,12 +1279,9 @@
         gain.connect(audioCtx.destination);
         osc.start();
         osc.stop(audioCtx.currentTime + duration);
-      } catch (e) {
-        console.warn('Audio error:', e);
-      }
+      } catch (e) {}
     }
 
-    // Spraaksynthese (Web Speech API)
     function speakText(text) {
       if (!config.speech || !('speechSynthesis' in window)) return;
       try {
@@ -822,36 +1290,26 @@
         utter.lang = 'nl-NL';
         utter.rate = 1.05;
         window.speechSynthesis.speak(utter);
-      } catch (e) {
-        console.warn('Speech error:', e);
-      }
+      } catch (e) {}
     }
 
-    // Trillen (voor mobiel/Samsung)
     function triggerVibrate(pattern) {
       if (config.vibrate && 'vibrate' in navigator) {
-        navigator.vibrate(pattern);
+        try { navigator.vibrate(pattern); } catch (e) {}
       }
     }
 
-    // Voorkom dat Samsung scherm op zwart gaat tijdens workout
     async function requestWakeLock() {
       try {
-        if ('wakeLock' in navigator) {
-          wakeLock = await navigator.wakeLock.request('screen');
-        }
-      } catch (err) {
-        console.log('WakeLock not active:', err);
-      }
+        if ('wakeLock' in navigator) wakeLock = await navigator.wakeLock.request('screen');
+      } catch (err) {}
     }
 
     function releaseWakeLock() {
-      if (wakeLock) {
-        wakeLock.release().then(() => wakeLock = null);
-      }
+      if (wakeLock) wakeLock.release().then(() => wakeLock = null).catch(() => {});
     }
 
-    // UI elementen
+    // UI Verwijzingen
     const elPhaseBadge = document.getElementById('phase-badge');
     const elTimerProgress = document.getElementById('timer-progress');
     const elDisplaySec = document.getElementById('display-seconds');
@@ -869,17 +1327,17 @@
     const btnPrev = document.getElementById('btn-prev');
     const btnNext = document.getElementById('btn-next');
     const mainCard = document.getElementById('main-card');
+    const svgStageWrapper = document.getElementById('svg-stage-wrapper');
 
-    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 95; // ~596.9
+    const CIRCLE_CIRCUMFERENCE = 2 * Math.PI * 48; // ~301.6
 
     function updateUI() {
       const step = workoutQueue[currentStepIndex];
       if (!step) return;
 
-      // Badges & styling per fase
       elPhaseBadge.className = `phase-badge ${step.type}`;
       if (step.type === 'work') {
-        elPhaseBadge.innerText = '⚡ WERK! GEVEN ALLES';
+        elPhaseBadge.innerText = '⚡ WERK! GEEF ALLES';
         elTimerProgress.style.stroke = 'var(--primary-green)';
         mainCard.style.borderColor = 'rgba(0, 230, 118, 0.4)';
       } else if (step.type === 'rest') {
@@ -897,11 +1355,14 @@
       }
 
       elDisplaySec.innerText = secondsLeft;
-      elDisplaySub.innerText = (step.type === 'done') ? 'TOP GEWERKT' : 'SECONDEN';
+      elDisplaySub.innerText = (step.type === 'done') ? 'TOP' : 'SEC';
 
       elExName.innerText = step.title;
       elExSub.innerText = step.sub;
       elExTip.innerText = step.tip;
+
+      // Update Geanimeerde SVG
+      svgStageWrapper.innerHTML = getExerciseSVG(step.exerciseId, isRunning && step.type === 'work');
 
       if (step.type === 'done') {
         elNextBox.style.display = 'none';
@@ -911,20 +1372,17 @@
       }
 
       elTxtRound.innerText = `Ronde ${step.round} / ${config.totalRounds}`;
-      elTxtStepNum.innerText = (step.stepIndex > 0) ? `Oefening ${step.stepIndex} / ${EXERCISES.length}` : `Voorbereiding`;
+      elTxtStepNum.innerText = (step.stepIndex > 0) ? `Oefening ${step.stepIndex} / ${EXERCISES.length}` : 'Voorbereiding';
 
-      // Cirkel voortgang
       const totalDur = Math.max(1, step.duration);
       const ratio = secondsLeft / totalDur;
       const offset = CIRCLE_CIRCUMFERENCE * (1 - ratio);
       elTimerProgress.style.strokeDasharray = CIRCLE_CIRCUMFERENCE;
       elTimerProgress.style.strokeDashoffset = offset;
 
-      // Totale workout voortgang
       const progressPercent = (currentStepIndex / (workoutQueue.length - 1)) * 100;
       elOverallBar.style.width = `${progressPercent}%`;
 
-      // Resterende totale tijd
       let remainingSec = secondsLeft;
       for (let i = currentStepIndex + 1; i < workoutQueue.length; i++) {
         remainingSec += workoutQueue[i].duration;
@@ -941,7 +1399,6 @@
         secondsLeft = step.duration;
         updateUI();
 
-        // Audio & Spraak bij stapwissel
         if (step.type === 'work') {
           playBeep(1760, 0.25, 'triangle');
           triggerVibrate([200, 100, 200]);
@@ -953,7 +1410,7 @@
         } else if (step.type === 'done') {
           playBeep(1046, 0.6, 'triangle');
           triggerVibrate([300, 100, 300, 100, 500]);
-          speakText(`Gefeliciteerd! Je hebt de 10 minuten workout voltooid!`);
+          speakText(`Gefeliciteerd! 10 minuten Military Calisthenics voltooid!`);
           pauseWorkout();
         }
       } else {
@@ -972,7 +1429,6 @@
     function tick() {
       if (secondsLeft > 1) {
         secondsLeft--;
-        // Piepjes bij laatste 3 seconden
         if (secondsLeft <= 3 && secondsLeft > 0) {
           playBeep(880, 0.12, 'sine');
           triggerVibrate(80);
@@ -1001,6 +1457,7 @@
         }
       }
 
+      updateUI();
       timerInterval = setInterval(tick, 1000);
     }
 
@@ -1010,6 +1467,7 @@
       btnMain.classList.remove('paused');
       clearInterval(timerInterval);
       releaseWakeLock();
+      updateUI();
     }
 
     btnMain.addEventListener('click', () => {
@@ -1017,7 +1475,6 @@
         pauseWorkout();
       } else {
         if (workoutQueue[currentStepIndex].type === 'done') {
-          // Herstarten vanaf begin
           currentStepIndex = 0;
           secondsLeft = workoutQueue[0].duration;
           updateUI();
@@ -1026,24 +1483,37 @@
       }
     });
 
-    btnNext.addEventListener('click', () => {
-      nextStep();
+    btnNext.addEventListener('click', nextStep);
+    btnPrev.addEventListener('click', prevStep);
+
+    // Technique modal openen & vullen
+    const modalTech = document.getElementById('modal-technique');
+    const btnShowTech = document.getElementById('btn-show-technique');
+    const btnCloseTech = document.getElementById('btn-close-technique');
+    const btnCloseTech2 = document.getElementById('btn-close-technique-2');
+
+    btnShowTech.addEventListener('click', () => {
+      const step = workoutQueue[currentStepIndex];
+      const ex = EXERCISES.find(e => e.id === step.exerciseId) || EXERCISES[0];
+
+      document.getElementById('tech-modal-title').innerText = `📖 ${ex.name} (${ex.nl})`;
+      document.getElementById('tech-target').innerText = ex.target;
+      document.getElementById('tech-posture').innerText = ex.posture;
+      document.getElementById('tech-breathing').innerText = ex.breathing;
+      document.getElementById('tech-mistakes').innerText = ex.mistakes;
+
+      modalTech.classList.add('open');
     });
 
-    btnPrev.addEventListener('click', () => {
-      prevStep();
-    });
+    btnCloseTech.addEventListener('click', () => modalTech.classList.remove('open'));
+    btnCloseTech2.addEventListener('click', () => modalTech.classList.remove('open'));
 
-    // Modals
+    // Instellingen modal
     const modalSettings = document.getElementById('modal-settings');
     const modalList = document.getElementById('modal-list');
 
-    document.getElementById('btn-settings').addEventListener('click', () => {
-      modalSettings.classList.add('open');
-    });
-    document.getElementById('btn-close-settings').addEventListener('click', () => {
-      modalSettings.classList.remove('open');
-    });
+    document.getElementById('btn-settings').addEventListener('click', () => modalSettings.classList.add('open'));
+    document.getElementById('btn-close-settings').addEventListener('click', () => modalSettings.classList.remove('open'));
 
     document.getElementById('btn-save-settings').addEventListener('click', () => {
       config.workSec = parseInt(document.getElementById('cfg-work').value) || 30;
@@ -1053,7 +1523,6 @@
       config.sound = document.getElementById('cfg-sound').checked;
       config.vibrate = document.getElementById('cfg-vibrate').checked;
 
-      const wasRunning = isRunning;
       pauseWorkout();
       workoutQueue = buildWorkoutQueue();
       currentStepIndex = 0;
@@ -1062,7 +1531,7 @@
       modalSettings.classList.remove('open');
     });
 
-    // Oefeningenlijst genereren
+    // Oefeningenlijst
     const listContainer = document.getElementById('exercise-list-container');
     EXERCISES.forEach((ex, idx) => {
       const item = document.createElement('div');
@@ -1074,27 +1543,31 @@
           <div style="font-size:0.75rem;color:var(--text-muted);">${ex.sub}</div>
         </div>
       `;
+      item.addEventListener('click', () => {
+        modalList.classList.remove('open');
+        pauseWorkout();
+        const foundIdx = workoutQueue.findIndex(q => q.type === 'work' && q.exerciseId === ex.id);
+        if (foundIdx !== -1) {
+          currentStepIndex = foundIdx;
+          secondsLeft = workoutQueue[currentStepIndex].duration;
+          updateUI();
+        }
+      });
       listContainer.appendChild(item);
     });
 
-    document.getElementById('btn-list').addEventListener('click', () => {
-      modalList.classList.add('open');
-    });
-    document.getElementById('btn-close-list').addEventListener('click', () => {
-      modalList.classList.remove('open');
-    });
-    document.getElementById('btn-close-list-2').addEventListener('click', () => {
-      modalList.classList.remove('open');
-    });
+    document.getElementById('btn-list').addEventListener('click', () => modalList.classList.add('open'));
+    document.getElementById('btn-close-list').addEventListener('click', () => modalList.classList.remove('open'));
+    document.getElementById('btn-close-list-2').addEventListener('click', () => modalList.classList.remove('open'));
 
-    // Service Worker registreren voor offline PWA
+    // Service Worker voor offline Samsung
     if ('serviceWorker' in navigator) {
       window.addEventListener('load', () => {
-        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW failed', err));
+        navigator.serviceWorker.register('sw.js').catch(err => console.log('SW err', err));
       });
     }
 
-    // Initialisatie
+    // Start
     workoutQueue = buildWorkoutQueue();
     secondsLeft = workoutQueue[0].duration;
     updateUI();
