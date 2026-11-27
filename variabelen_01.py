@@ -19,3 +19,16 @@ print(f"3 * 4 = {3 * 4}")
 print(f"10 / 5 = {10 / 5}")
 print(f"35 % 3 = {35 % 3}")
 print(f"2 ** 4 = {2 ** 4}")
+
+# iteration wordt gebruikt om iets automatisch over en over te doen. een voorbeeld is een for loop. een for loop wordt gebruikt om iets een aantal keer te herhalen. 
+# in dit geval wordt de print functie 10 keer uitgevoerd.
+for i in range(10):
+    #statement that gets repeated
+    print("hello")
+for i in range(10):
+    print(i)
+
+for i in range(3):
+    print (i)
+    print("--")
+

@@ -1,0 +1,20 @@
+{
+  "settings": {
+    "com_port": "COM4",
+    "baudrate": "115200",
+    "civ_address": "B6",
+    "max_swr": 2.8,
+    "auto_connect": true,
+    "auto_scope": true,
+    "default_wf_source": "Radio RF Scope (CI-V)"
+  },
+  "station": {
+    "callsign": "PA7RW",
+    "operator": "Rob",
+    "qth": "Heerhugowaard",
+    "grid": "JO22KP",
+    "cq_zone": "14",
+    "itu_zone": "27",
+    "rig": "Icom IC-7300mk2"
+  }
+}

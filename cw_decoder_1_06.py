@@ -203,8 +203,13 @@ class CWTerminalWindow:
             ["F5 HisCall", "{CALL} "],
             ["F6 QTH/Naam", "{CALL} DE PA7RW NAME ROB QTH HEERHUGOWAARD HW? BK "],
             ["F7 AGN?", "AGN? "],
-            ["F8 73 SK", "{CALL} DE PA7RW TNX FER QSO 73 SK "]
+            ["F8 73 SK", "{CALL} DE PA7RW TNX FER QSO 73 SK "],
+            ["F9 leeg", "empty "],
+            ["F10 leeg", "empty "],
+            ["F11 leeg", "empty "],
+            ["F12 leeg", "empty "],
         ]
+             
         macro_path = os.path.join(get_base_dir(), "cw_macros.json")
         if os.path.exists(macro_path):
             try:
